@@ -20,8 +20,8 @@ import importlib
 #################################################################################
 ### PythonSv Template editing begins here --------------
 #################################################################################
-package = 'basic_python'       # The actual package in which the version information is stored
-package_name = 'basic_python'  # The symbolic name of the package in the python index
+package = 'template_home_assignment'       # The actual package in which the version information is stored
+package_name = 'template_home_assignment'  # The symbolic name of the package in the python index
 
 version = '0.1.0'
 

@@ -1,11 +1,10 @@
 from setuptools import setup
 
-setup(name='basic_python',
+setup(name='template_home_assignment',
     version='0.1.0',
-    description='Basic Python course material',
-    author='Maylat, Maoz',
-    author_email='maoz.maylat@intel.com',
-    url='https://gitlab.devtools.intel.com/python_training/basic_python/wikis/home',
+    description='Template home assignment',
+    author='na',
+    author_email='na',
 
     packages=[],
 
