@@ -50,11 +50,11 @@ class VendingMachine:
                     # create a document (after update drink quantity) in format json from _drink_manager.get_drink_data()
                     updated_drink_json = json.dumps([drinkobj.__dict__ for drinkobj in self._drink_manager.drink_data.values()])
                     # save the up-to-date drink quantity to file
-                    self._drink_manager.record_object_data(updated_drink_json)
+                    self._drink_manager.record_object_data(updated_drink_json, Consts.JSON_DIR_PATH_PROGRAM + Consts.DRINK_DATA_AFTER_BUY_JSON_FILE_NAME)
                     # create a format json document from money_manager.
                     updated_money_json = json.dumps([self._money_manager.__dict__])
                     # save the new amount into file
-                    self._money_manager.record_money(updated_money_json)
+                    self._money_manager.record_money(updated_money_json, Consts.JSON_DIR_PATH_PROGRAM + Consts.MONEY_DATA_AFTER_BUY_JSON_FILE_NAME)
                     self._money_manager.print_change_money(change)
                     self._drink_manager.print_drink_payment(drink.name)
                 break

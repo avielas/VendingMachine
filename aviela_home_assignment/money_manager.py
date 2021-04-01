@@ -31,7 +31,7 @@ class MoneyManager:
     def customer_money(self, x):
         self._customer_money = x
 
-    def record_money(self, json_moeny_data, json_file_path="json/MoneyDataAfterBuyDrink.json"):
+    def record_money(self, json_moeny_data, json_file_path):
         # Open the file for storing money data when the drink has been paid (we can overwrite MoneyData.json, but keep it separately to make it clear)
         with open(json_file_path, "w") as write_file:
             write_file.write(json_moeny_data)

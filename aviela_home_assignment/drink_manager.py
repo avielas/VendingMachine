@@ -39,7 +39,7 @@ class DrinkManager(ProductManager):
                 available_drinks.append(available_drink_with_price)
         return available_drinks
 
-    def record_object_data(self, json_drink_data, json_file_path="json/DrinkDataAfterBuyDrink.json"):
+    def record_object_data(self, json_drink_data, json_file_path):
         # Open the file for storing information of the number of cans when the drink is dispensed (we can override DrinkData.json, but keep it separately to make it clear)
         with open(json_file_path, "w") as write_file:
             write_file.write(json_drink_data)
