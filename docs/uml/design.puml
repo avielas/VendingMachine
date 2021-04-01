@@ -1,0 +1,68 @@
+@startuml class diagram
+'https://plantuml.com/class-diagram
+
+class VendingMachine{
+    -_drink_manager
+    -_money_manager
+    -void __init__(self, drink_manager, money_manager)
+    +void start_vending_machine()
+}
+
+class MoneyManager{
+    -_change_money : Integer
+    -_customer_money : Integer
+    - void __init__(self, money_json)
+    +_change_money change_money(self)
+    +void change_money(self, x)
+    +_customer_money customer_money(self)
+    +void customer_money(self, x)
+    +void record_money(self, json_moeny_data)
+    +void print_change_money(self, change_money)
+}
+
+class DrinkManager{
+    -_drink_data [id, drink] : dictionary [1..*] of
+    -void __init__(self, drink_json)
+    +void add_drink_data(self, drink)
+    +void drink_data(self, x)
+    +available_drinks get_available_drink_data(self)
+    +void record_drink(self, json_drink_data)
+    +void print_drink_payment(self, drink_name)
+}
+
+class Product{
+    -_id : Integer
+    -_name : String
+    -_price : Integer
+    -_quantity : Integer
+    -void __init__(self, id, name, price, quantity)
+    +_id id(self)
+    +void id(self, x)
+    +_name name(self)
+    +void name(self, x)
+    +_price price(self)
+    +void price(self, x)
+    +_quantity quantity(self)
+    +void quantity(self, x)
+}
+
+class Drink{}
+
+class Consts{
+    CURRENCY_TYPE : String
+    COINS_LIST : List
+}
+
+abstract class ProductManager{
+    data_object get_available_data(self)
+    void record_object_data(self, json_object_data, json_file_path)
+}
+
+ProductManager <|-- DrinkManager
+Product <|-- Drink
+VendingMachine "1" *-- "1" DrinkManager : have >
+VendingMachine "1" *-- "1" MoneyManager : have >
+DrinkManager "1" *-- "many" Drink :have >
+(Drink, DrinkManager) . Bug
+
+@enduml

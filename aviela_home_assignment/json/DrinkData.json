@@ -1,0 +1,7 @@
+[
+    {"_id": 1, "_name":"coke", "_price":12, "_quantity":5},
+    {"_id": 2, "_name":"fanta", "_price":10, "_quantity":5},
+    {"_id": 3, "_name":"water", "_price":30, "_quantity":2},
+    {"_id": 4, "_name":"sprite", "_price":17, "_quantity":5},
+    {"_id": 5, "_name":"beer", "_price":14, "_quantity":1}
+]

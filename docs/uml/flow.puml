@@ -1,0 +1,26 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+start
+if (Insert valid coin?) then (yes)
+    :Displays the type of drinks that can be purchased.
+    Print the current deposit & valid coin types.;
+    if (User choose valid drink?) then (yes)
+        if(Customer have enough money to buy the chosen drink?) then (yes)
+            :Get the drink object from data file;
+            :Send the selected drink out of the channel;
+            :Collect the money from customer;
+            :If there is change, update the remaining money at the channel to receive change;
+            :Update the data files;
+        else (no)
+            #pink:Print error and ask customer to insert more coins;
+        endif
+    else (no)
+        #pink:Print error and ask customer to choose a valid one;
+    endif
+else (no)
+    #pink:Print error and run again;
+endif
+end
+
+@enduml
