@@ -4,7 +4,7 @@ from aviela_home_assignment.consts import Consts
 
 class MoneyManager:
     """
-        MoneyManager class for handle the money calculation and record
+    MoneyManager class for handle the money calculation and record
     """
     def __init__(self, money_json):
         # Read MoneyData.json

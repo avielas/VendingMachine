@@ -6,7 +6,7 @@ from aviela_home_assignment.interface.product_manager import ProductManager
 
 class DrinkManager(ProductManager):
     """
-        DrinkManager class which implement ProductManager interface
+    DrinkManager class which implement ProductManager interface
     """
     def __init__(self, drink_json):
         self.drink_data = []

@@ -4,7 +4,7 @@ from aviela_home_assignment.consts import Consts
 
 class VendingMachine:
     """
-        VendingMachine class which run the main flow
+    VendingMachine class which run the main flow
     """
     def __init__(self, drink_manager, money_manager):
         self._drink_manager = drink_manager

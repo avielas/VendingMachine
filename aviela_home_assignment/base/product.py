@@ -2,9 +2,15 @@
 
 class Product:
     """
-    Base class (for inheritance use) which define basic member variables for Vending Machine's Product
+    Vending Machine's Product
     """
     def __init__(self, uid, name, price, quantity):
+        """
+        @param uid: Uniq id for describe each product. Firstly initialize by JSON file and never change manually by program
+        @param name: Product's name which visible to user. Firstly initialize by JSON file and never change manually by program
+        @param price: Product's price which visible to user. Firstly initialize by JSON file and never change manually by program
+        @param quantity: Product's quantity which visible to user. The VM update this value in any change
+        """
         self.uid = uid
         self.name = name
         self.price = price
