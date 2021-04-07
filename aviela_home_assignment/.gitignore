@@ -1,7 +1,0 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-.idea
-*.pyc
-venvWork/
-json/DrinkDataAfterBuyDrink.json
-json/MoneyDataAfterBuyDrink.json

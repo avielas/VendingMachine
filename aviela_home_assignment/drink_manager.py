@@ -17,7 +17,7 @@ class DrinkManager(ProductManager):
                 drink = Drink(drink_dic["_id"], drink_dic["_name"], drink_dic["_price"], drink_dic["_quantity"])
                 self.add_drink_data(drink)
             # convert list to dictionary with ID as a key
-            self._drink_data = dict((x.id, x) for x in self._drink_data)
+            self._drink_data = dict((x.uid, x) for x in self._drink_data)
 
     @property
     def drink_data(self):
@@ -35,7 +35,7 @@ class DrinkManager(ProductManager):
         available_drinks = []
         for drink in self._drink_data.values():
             if drink.quantity > 0:
-                available_drink_with_price = "{} {} {} {} {} {}".format(drink.id, ":", drink.name, "price", drink.price, Consts.CURRENCY_TYPE)
+                available_drink_with_price = "{} {} {} {} {} {}".format(drink.uid, ":", drink.name, "price", drink.price, Consts.CURRENCY_TYPE)
                 available_drinks.append(available_drink_with_price)
         return available_drinks
 

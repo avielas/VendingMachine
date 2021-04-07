@@ -4,19 +4,19 @@ class Product:
     """
     Base class (for inheritance use) which define basic member variables for Vending Machine's Product
     """
-    def __init__(self, id, name, price, quantity):
-        self.id = id
+    def __init__(self, uid, name, price, quantity):
+        self.uid = uid
         self.name = name
         self.price = price
         self.quantity = quantity
 
     @property
-    def id(self):
-        return self._id
+    def uid(self):
+        return self._uid
 
-    @id.setter
-    def id(self, x):
-        self._id = x
+    @uid.setter
+    def uid(self, x):
+        self._uid = x
 
     @property
     def name(self):
