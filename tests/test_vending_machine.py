@@ -1,7 +1,7 @@
 """Tests the DrinkManager class."""
-from money_manager import MoneyManager
-from drink_manager import DrinkManager
-from consts import Consts
+from aviela_home_assignment.money_manager import MoneyManager
+from aviela_home_assignment.drink_manager import DrinkManager
+from aviela_home_assignment.consts import Consts
 import random
 import os
 import json

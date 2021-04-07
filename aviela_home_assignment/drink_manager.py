@@ -1,7 +1,7 @@
 import json
-from drink import Drink
-from consts import Consts
-from interface.product_manager import ProductManager
+from aviela_home_assignment.drink import Drink
+from aviela_home_assignment.consts import Consts
+from aviela_home_assignment.interface.product_manager import ProductManager
 
 
 class DrinkManager(ProductManager):
@@ -14,7 +14,7 @@ class DrinkManager(ProductManager):
         with open(drink_json) as fd:
             drink_list = json.load(fd)
             for drink_dic in drink_list:
-                drink = Drink(drink_dic["_id"], drink_dic["_name"], drink_dic["_price"], drink_dic["_quantity"])
+                drink = Drink(drink_dic["_uid"], drink_dic["_name"], drink_dic["_price"], drink_dic["_quantity"])
                 self.add_drink_data(drink)
             # convert list to dictionary with ID as a key
             self._drink_data = dict((x.uid, x) for x in self._drink_data)

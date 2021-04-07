@@ -1,8 +1,8 @@
 """Tests the DrinkManager class."""
-from drink_manager import DrinkManager
+from aviela_home_assignment.drink_manager import DrinkManager
 import os
 import json
-from consts import Consts
+from aviela_home_assignment.consts import Consts
 
 
 def test_get_available_drink_data():

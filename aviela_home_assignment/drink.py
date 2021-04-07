@@ -1,4 +1,4 @@
-from base.product import Product
+from aviela_home_assignment.base.product import Product
 
 
 class Drink(Product):

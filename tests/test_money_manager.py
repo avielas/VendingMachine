@@ -1,8 +1,8 @@
 """Tests the ManyManager class."""
-from money_manager import MoneyManager
+from aviela_home_assignment.money_manager import MoneyManager
 import os
 import json
-from consts import Consts
+from aviela_home_assignment.consts import Consts
 
 
 def test_getters_and_setters():
