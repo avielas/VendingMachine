@@ -6,9 +6,9 @@ class VendingMachine:
     """
     VendingMachine class which run the main flow
     """
-    def __init__(self, drink_manager, money_manager):
-        self._drink_manager = drink_manager
-        self._money_manager = money_manager
+    def __init__(self, dm, mm):
+        self._dmDrinkManager = dm
+        self._mmMoneyManager = mm
 
     def start_vending_machine(self):
         # Open infinity loop which can stop by ctrl+c
@@ -16,47 +16,47 @@ class VendingMachine:
             print("\n --- Vending machine --- ")
             self.print_initial_message()
             # Get input from customer
-            coins_list_str = ', '.join(Consts.COINS_LIST)
-            customer_coin = str(input("Please insert coin " + coins_list_str + " " + str(Consts.CURRENCY_TYPE) + ". To place order, press 0: "))
+            sCoins = ', '.join(Consts.COINS_LIST)
+            sUserInput = str(input("Please insert coin " + sCoins + " " + str(Consts.CURRENCY_TYPE) + ". To place order, press 0: "))
             # If you drop valid coin, add the money that has been added continuously with customer_money
-            if customer_coin in Consts.COINS_LIST:
-                self._money_manager.customer_money = self._money_manager.customer_money + int(customer_coin)
+            if sUserInput in Consts.COINS_LIST:
+                self._mmMoneyManager.iCustomerMoney = self._mmMoneyManager.iCustomerMoney + int(sUserInput)
             # If you click to select the product
-            elif customer_coin == '0':
+            elif sUserInput == '0':
                 while True:
                     self.print_initial_message()
                     # Keep what the customer choose to drink
                     try:
-                        drink_id = int(input("Please give the id of the drink you want: "))
+                        iDrinkId = int(input("Please give the id of the drink you want: "))
                     except ValueError:
                         self.print_invalid_drink_id_error_mesaage()
                         continue
-                    drink_data_dict = self._drink_manager.drink_data
-                    if drink_id in drink_data_dict:
-                        drink = drink_data_dict[drink_id]
+                    dDrinks = self._dmDrinkManager.dDrinks
+                    if iDrinkId in dDrinks:
+                        dDrink = dDrinks[iDrinkId]
                         break
                     else:
                         self.print_invalid_drink_id_error_mesaage()
                         continue
-                if self._money_manager.customer_money < drink.price:
-                    self.print_not_enough_money_to_buy_drink_error_message(drink)
+                if self._mmMoneyManager.iCustomerMoney < dDrink.iPrice:
+                    self.print_not_enough_money_to_buy_drink_error_message(dDrink)
                     continue
                 else:
-                    change = self._money_manager.customer_money - drink.price
+                    iChange = self._mmMoneyManager.iCustomerMoney - dDrink.iPrice
                     # update machine change
-                    self._money_manager.change_money = self._money_manager.change_money + drink.price
-                    drink.quantity = drink.quantity - 1
-                    self._money_manager.customer_money = 0
+                    self._mmMoneyManager.iChangeMoney = self._mmMoneyManager.iChangeMoney + dDrink.iPrice
+                    dDrink.iQuantity = dDrink.iQuantity - 1
+                    self._mmMoneyManager.iCustomerMoney = 0
                     # create a document (after update drink quantity) in format json from _drink_manager.get_drink_data()
-                    updated_drink_json = json.dumps([drinkobj.__dict__ for drinkobj in self._drink_manager.drink_data.values()])
+                    sDrinkJsonToDump = json.dumps([drinkobj.__dict__ for drinkobj in self._dmDrinkManager.dDrinks.values()])
                     # save the up-to-date drink quantity to file
-                    self._drink_manager.record_object_data(updated_drink_json, Consts.JSON_DIR_PATH_PROGRAM + Consts.DRINK_DATA_AFTER_BUY_JSON_FILE_NAME)
+                    self._dmDrinkManager.record_object_data(sDrinkJsonToDump, Consts.JSON_DIR_PATH_PROGRAM + Consts.DRINK_DATA_AFTER_BUY_JSON_FILE_NAME)
                     # create a format json document from money_manager.
-                    updated_money_json = json.dumps([self._money_manager.__dict__])
+                    sMoneyJsonToDump = json.dumps([self._mmMoneyManager.__dict__])
                     # save the new amount into file
-                    self._money_manager.record_money(updated_money_json, Consts.JSON_DIR_PATH_PROGRAM + Consts.MONEY_DATA_AFTER_BUY_JSON_FILE_NAME)
-                    self._money_manager.print_change_money(change)
-                    self._drink_manager.print_drink_payment(drink.name)
+                    self._mmMoneyManager.record_money(sMoneyJsonToDump, Consts.JSON_DIR_PATH_PROGRAM + Consts.MONEY_DATA_AFTER_BUY_JSON_FILE_NAME)
+                    self.print_change_money(iChange)
+                    self.print_drink_payment(dDrink.sName)
                 break
             else:
                 self.print_invalid_coin_error_message()
@@ -66,10 +66,10 @@ class VendingMachine:
         print("********* You inserted invalid coin. please insert again ! **********")
         print("*********************************************************************")
 
-    def print_not_enough_money_to_buy_drink_error_message(self, drink):
+    def print_not_enough_money_to_buy_drink_error_message(self, dDrink):
         print("\n************************************************************************************************************")
-        print("***** The money that drops(" + str(self._money_manager.customer_money) + ") is less than the price(" + str(
-            drink.price) + ") of the product, please insert more money !!! *****")
+        print("***** The money that drops(" + str(self._mmMoneyManager.iCustomerMoney) + ") is less than the price(" + str(
+            dDrink.iPrice) + ") of the product, please insert more money !!! *****")
         print("************************************************************************************************************\n")
 
     def print_invalid_drink_id_error_mesaage(self):
@@ -79,5 +79,11 @@ class VendingMachine:
 
     def print_initial_message(self):
         print("\nYou can choose one of the following drinks:")
-        print(self._drink_manager.get_available_data())
-        print(f"For now, your deposit money is {self._money_manager.customer_money} " + str(Consts.CURRENCY_TYPE) + ".")
+        print(self._dmDrinkManager.get_available_products())
+        print(f"For now, your deposit money is {self._mmMoneyManager.iCustomerMoney} " + str(Consts.CURRENCY_TYPE) + ".")
+
+    def print_drink_payment(self, sDrinkName):
+        print(f"Payment for {sDrinkName} is done.")
+
+    def print_change_money(self, iChangeMoney):
+        print(f"Change money is {iChangeMoney} " + Consts.CURRENCY_TYPE + ".")

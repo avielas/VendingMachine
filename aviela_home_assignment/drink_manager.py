@@ -8,41 +8,38 @@ class DrinkManager(ProductManager):
     """
     DrinkManager class which implement ProductManager interface
     """
-    def __init__(self, drink_json):
-        self.drink_data = []
+    def __init__(self, sDrinksJsonFilePath):
+        """
+        @param sDrinksJsonFilePath: path to json file which contains available products and their quantity
+        """
+        self._dDrinks = []
         # Read DrinkData.json. This will take the id, name, price and quantity data to create drink obj by storing it in the _drink_data dictionary
-        with open(drink_json) as fd:
-            drink_list = json.load(fd)
-            for drink_dic in drink_list:
-                drink = Drink(drink_dic["_uid"], drink_dic["_name"], drink_dic["_price"], drink_dic["_quantity"])
+        with open(sDrinksJsonFilePath) as fd:
+            lDrinks = json.load(fd)
+            for dDrink in lDrinks:
+                drink = Drink(dDrink["_iUid"], dDrink["_sName"], dDrink["_iPrice"], dDrink["_iQuantity"])
                 self.add_drink_data(drink)
             # convert list to dictionary with ID as a key
-            self._drink_data = dict((x.uid, x) for x in self._drink_data)
+            self._dDrinks = dict((x.iUid, x) for x in self._dDrinks)
 
     @property
-    def drink_data(self):
-        return self._drink_data
-
-    @drink_data.setter
-    def drink_data(self, x):
-        self._drink_data = x
+    def dDrinks(self):
+        return self._dDrinks
 
     # Create add_drink_data() to store drink in []
-    def add_drink_data(self, drink):
-        self._drink_data.append(drink)
+    def add_drink_data(self, dDrink):
+        self._dDrinks.append(dDrink)
 
-    def get_available_data(self):
-        available_drinks = []
-        for drink in self._drink_data.values():
-            if drink.quantity > 0:
-                available_drink_with_price = "{} {} {} {} {} {}".format(drink.uid, ":", drink.name, "price", drink.price, Consts.CURRENCY_TYPE)
-                available_drinks.append(available_drink_with_price)
-        return available_drinks
+    def get_available_products(self):
+        lAvailableProducts = []
+        for dDrink in self._dDrinks.values():
+            if dDrink.iQuantity > 0:
+                sAvailableProductWithPrice = "{} {} {} {} {} {}".format(dDrink.iUid, ":", dDrink.sName, "price", dDrink.iPrice, Consts.CURRENCY_TYPE)
+                lAvailableProducts.append(sAvailableProductWithPrice)
+        return lAvailableProducts
 
-    def record_object_data(self, json_drink_data, json_file_path):
+    def record_object_data(self, sJsonData, sJsonFilePath):
         # Open the file for storing information of the number of cans when the drink is dispensed (we can override DrinkData.json, but keep it separately to make it clear)
-        with open(json_file_path, "w") as write_file:
-            write_file.write(json_drink_data)
+        with open(sJsonFilePath, "w") as IOFile:
+            IOFile.write(sJsonData)
 
-    def print_drink_payment(self, drink_name):
-        print(f"Payment for {drink_name} is done.")

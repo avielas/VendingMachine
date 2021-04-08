@@ -4,46 +4,34 @@ class Product:
     """
     Vending Machine's Product
     """
-    def __init__(self, uid, name, price, quantity):
+    def __init__(self, iUid: int, sName: str, iPrice: int, iQuantity: int):
         """
-        @param uid: Uniq id for describe each product. Firstly initialize by JSON file and never change manually by program
-        @param name: Product's name which visible to user. Firstly initialize by JSON file and never change manually by program
-        @param price: Product's price which visible to user. Firstly initialize by JSON file and never change manually by program
-        @param quantity: Product's quantity which visible to user. The VM update this value in any change
+        @param iUid: Uniq id for describe each product. Firstly initialize by JSON file and never change manually by program
+        @param sName: Product's name which visible to user. Firstly initialize by JSON file and never change manually by program
+        @param iPrice: Product's price which visible to user. Firstly initialize by JSON file and never change manually by program
+        @param iQuantity: Product's quantity which visible to user. The VM update this value in any change
         """
-        self.uid = uid
-        self.name = name
-        self.price = price
-        self.quantity = quantity
+        self._iUid = iUid
+        self._sName = sName
+        self._iPrice = iPrice
+        self.iQuantity = iQuantity
 
     @property
-    def uid(self):
-        return self._uid
-
-    @uid.setter
-    def uid(self, x):
-        self._uid = x
+    def iUid(self):
+        return self._iUid
 
     @property
-    def name(self):
-        return self._name
-
-    @name.setter
-    def name(self, x):
-        self._name = x
+    def sName(self):
+        return self._sName
 
     @property
-    def price(self):
-        return self._price
-
-    @price.setter
-    def price(self, x):
-        self._price = x
+    def iPrice(self):
+        return self._iPrice
 
     @property
-    def quantity(self):
-        return self._quantity
+    def iQuantity(self):
+        return self._iQuantity
 
-    @quantity.setter
-    def quantity(self, x):
-        self._quantity = x
+    @iQuantity.setter
+    def iQuantity(self, x):
+        self._iQuantity = x

@@ -5,8 +5,8 @@ class Drink(Product):
     """
     Drink class which use from base Product
     """
-    def __init__(self, uid, name, price, quantity):
+    def __init__(self, iUid, sName, iPrice, iQuantity):
         """
         For variables documentation see Product class init description
         """
-        super().__init__(uid, name, price, quantity)
+        super().__init__(iUid, sName, iPrice, iQuantity)

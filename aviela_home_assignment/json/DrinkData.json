@@ -1,7 +1,7 @@
 [
-    {"_uid": 1, "_name":"coke", "_price":12, "_quantity":5},
-    {"_uid": 2, "_name":"fanta", "_price":10, "_quantity":5},
-    {"_uid": 3, "_name":"water", "_price":30, "_quantity":2},
-    {"_uid": 4, "_name":"sprite", "_price":17, "_quantity":5},
-    {"_uid": 5, "_name":"beer", "_price":14, "_quantity":1}
+    {"_iUid": 1, "_sName":"coke", "_iPrice":12, "_iQuantity":5},
+    {"_iUid": 2, "_sName":"fanta", "_iPrice":10, "_iQuantity":5},
+    {"_iUid": 3, "_sName":"water", "_iPrice":30, "_iQuantity":2},
+    {"_iUid": 4, "_sName":"sprite", "_iPrice":17, "_iQuantity":5},
+    {"_iUid": 5, "_sName":"beer", "_iPrice":14, "_iQuantity":1}
 ]

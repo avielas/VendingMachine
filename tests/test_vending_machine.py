@@ -56,35 +56,35 @@ def start_vending_machine(money_manager, drink_manager, customer_coins):
     dir_path = os.path.dirname(os.path.dirname(__file__)) + "\\"
 
     for coin in customer_coins:
-        money_manager.customer_money = money_manager.customer_money + coin
+        money_manager.iCustomerMoney = money_manager.iCustomerMoney + coin
 
-    drink_data_len = len(drink_manager.drink_data)
+    drink_data_len = len(drink_manager.dDrinks)
     drink_id = random.randint(1, drink_data_len)
 
-    drink_data_dict = drink_manager.drink_data
+    drink_data_dict = drink_manager.dDrinks
     drink = drink_data_dict[drink_id]
-    save_customer_money = money_manager.customer_money
-    save_change_money = money_manager.change_money
+    save_customer_money = money_manager.iCustomerMoney
+    save_change_money = money_manager.iChangeMoney
 
-    if money_manager.customer_money < drink.price:
-        assert money_manager.customer_money < drink.price
+    if money_manager.iCustomerMoney < drink.iPrice:
+        assert money_manager.iCustomerMoney < drink.iPrice
     else:
-        change = money_manager.customer_money - drink.price
+        change = money_manager.iCustomerMoney - drink.iPrice
         # update machine change
-        money_manager.change_money = money_manager.change_money + drink.price
+        money_manager.iChangeMoney = money_manager.iChangeMoney + drink.iPrice
         # update drink quantity
-        drink.quantity = drink.quantity - 1
+        drink.iQuantity = drink.iQuantity - 1
         # reset cutomer_money to 0.
-        money_manager.customer_money = 0
+        money_manager.iCustomerMoney = 0
         # create a document (after update drink quantity) in format json from _drink_manager.get_drink_data()
-        updated_drink_json = json.dumps([drinkobj.__dict__ for drinkobj in drink_manager.drink_data.values()])
+        updated_drink_json = json.dumps([drinkobj.__dict__ for drinkobj in drink_manager.dDrinks.values()])
         # save the up-to-date drink quantity to file
         drink_manager.record_object_data(updated_drink_json, dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.DRINK_DATA_AFTER_BUY_JSON_FILE_NAME)
         # create a format json document from money_manager.
         updated_money_json = json.dumps([money_manager.__dict__])
         # save the new amount into file
         money_manager.record_money(updated_money_json, dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_AFTER_BUY_JSON_FILE_NAME)
-        assert change == save_customer_money - drink.price
-        assert money_manager.change_money == save_change_money + drink.price
+        assert change == save_customer_money - drink.iPrice
+        assert money_manager.iChangeMoney == save_change_money + drink.iPrice
 
 
