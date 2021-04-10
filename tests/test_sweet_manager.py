@@ -12,8 +12,16 @@ def test_get_available_products():
     sweet_manager = SweetManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
     sweet_6 = sweet_manager.pProducts[6]
     sweet_7 = sweet_manager.pProducts[7]
-    sweet_6.iQuantity = 0
-    sweet_7.iQuantity = 0
+
+    sweet_manager.update_quantity(sweet_6.iUid)
+
+    sweet_manager.update_quantity(sweet_7.iUid)
+    sweet_manager.update_quantity(sweet_7.iUid)
+    sweet_manager.update_quantity(sweet_7.iUid)
+    sweet_manager.update_quantity(sweet_7.iUid)
+    sweet_manager.update_quantity(sweet_7.iUid)
+    sweet_manager.update_quantity(sweet_7.iUid)
+
     count_available = len(sweet_manager.pProducts) - 2
     count_available_after = sweet_manager.get_available_products()
 
@@ -29,8 +37,7 @@ def test_dump_products():
 
     sweet = sweet_manager.pProducts[6]
     curr_sweet_quantity = sweet.iQuantity
-    # update sweet quantity
-    sweet.iQuantity = sweet.iQuantity - 1
+    sweet_manager.update_quantity(sweet.iUid)
     # save the up-to-date sweet quantity to file
     sSweetJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.SWEET_DATA_DUMP_JSON_FILE
     sweet_manager.dump_products(sSweetJsonFilePath)

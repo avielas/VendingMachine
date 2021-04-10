@@ -51,3 +51,10 @@ class ProductManager:
         @param sProductsJsonFilePath: path to json file which contains available products and their id, quantity, price and family
         """
         raise NotImplementedError("add_products is abstract function and you should implement it")
+
+    def update_quantity(self, iProductId):
+        """
+        remove 1 from product quantity after purchase
+        @param iProductId: product id
+        """
+        self._pProducts[iProductId].reduce_1_from_quantity()

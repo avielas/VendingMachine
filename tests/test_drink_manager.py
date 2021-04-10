@@ -13,8 +13,16 @@ def test_get_available_products():
     drink_manager = DrinkManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
     drink_1 = drink_manager.pProducts[1]
     drink_3 = drink_manager.pProducts[3]
-    drink_1.iQuantity = 0
-    drink_3.iQuantity = 0
+
+    drink_manager.update_quantity(drink_1.iUid)
+    drink_manager.update_quantity(drink_1.iUid)
+    drink_manager.update_quantity(drink_1.iUid)
+    drink_manager.update_quantity(drink_1.iUid)
+    drink_manager.update_quantity(drink_1.iUid)
+
+    drink_manager.update_quantity(drink_3.iUid)
+    drink_manager.update_quantity(drink_3.iUid)
+
     count_available = len(drink_manager.pProducts) - 2
     count_available_after = drink_manager.get_available_products()
 
@@ -30,8 +38,7 @@ def test_dump_products():
 
     drink = drink_manager.pProducts[1]
     curr_drink_quantity = drink.iQuantity
-    # update drink quantity
-    drink.iQuantity = drink.iQuantity - 1
+    drink_manager.update_quantity(drink.iUid)
     # save the up-to-date drink quantity to file
     sDrinkJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.DRINK_DATA_DUMP_JSON_FILE
     drink_manager.dump_products(sDrinkJsonFilePath)

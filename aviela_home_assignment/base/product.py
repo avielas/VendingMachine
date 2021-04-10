@@ -15,7 +15,7 @@ class Product:
         self._iUid = iUid
         self._sName = sName
         self._iPrice = iPrice
-        self.iQuantity = iQuantity
+        self._iQuantity = iQuantity
         self._sProductFamily = sProductFamily
 
     @property
@@ -34,10 +34,9 @@ class Product:
     def iQuantity(self):
         return self._iQuantity
 
-    @iQuantity.setter
-    def iQuantity(self, x):
-        self._iQuantity = x
-
     @property
     def sProductFamily(self):
         return self._sProductFamily
+
+    def reduce_1_from_quantity(self):
+        self._iQuantity -= 1

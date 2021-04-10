@@ -55,7 +55,7 @@ class VendingMachine:
                     iChange = self._mmMoneyManager.iCustomerMoney - pProduct.iPrice
                     # update machine change
                     self._mmMoneyManager.iChangeMoney = self._mmMoneyManager.iChangeMoney + pProduct.iPrice
-                    pProduct.iQuantity = pProduct.iQuantity - 1
+                    self.update_quantity(pProducts, iProductId)
                     if pProduct.iQuantity == 0:
                         self.remove_product(pProducts, iProductId)
                     self._mmMoneyManager.iCustomerMoney = 0
@@ -134,3 +134,10 @@ class VendingMachine:
             self._smSweetManager.remove_product(iProductId)
         elif isinstance(pProduct, Drink):
             self._dmDrinkManager.remove_product(iProductId)
+
+    def update_quantity(self, pProducts, iProductId):
+        pProduct = pProducts[iProductId]
+        if isinstance(pProduct, Sweet):
+            self._smSweetManager.update_quantity(iProductId)
+        elif isinstance(pProduct, Drink):
+            self._dmDrinkManager.update_quantity(iProductId)

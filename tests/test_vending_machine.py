@@ -4,6 +4,8 @@ from aviela_home_assignment.drink_manager import DrinkManager
 from aviela_home_assignment.sweet_manager import SweetManager
 from aviela_home_assignment.vending_machine import VendingMachine
 from aviela_home_assignment.consts import Consts
+from aviela_home_assignment.drink import Drink
+from aviela_home_assignment.sweet import Sweet
 import random
 import os
 import json
@@ -20,8 +22,7 @@ def test_dump_products_data_drink():
     vm = VendingMachine(sm, dm, mm)
     drink = dm.pProducts[1]
     curr_drink_quantity = drink.iQuantity
-    # update drink quantity
-    drink.iQuantity = drink.iQuantity - 1
+    dm.update_quantity(drink.iUid)
     sProductJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_DUMP_JSON_FILE
     sDrinkJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.DRINK_DATA_DUMP_JSON_FILE
     sSweetJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.SWEET_DATA_DUMP_JSON_FILE
@@ -46,8 +47,7 @@ def test_dump_products_data_sweet():
     vm = VendingMachine(sm, dm, mm)
     sweet = sm.pProducts[6]
     curr_sweet_quantity = sweet.iQuantity
-    # update sweet quantity
-    sweet.iQuantity = sweet.iQuantity - 1
+    sm.update_quantity(sweet.iUid)
     sProductJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_DUMP_JSON_FILE
     sDrinkJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.DRINK_DATA_DUMP_JSON_FILE
     sSweetJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.SWEET_DATA_DUMP_JSON_FILE
@@ -119,7 +119,10 @@ def start_vending_machine(customer_coins):
         # update machine change
         mm.iChangeMoney = mm.iChangeMoney + product.iPrice
         # update product quantity
-        product.iQuantity = product.iQuantity - 1
+        if isinstance(product, Sweet):
+            sm.update_quantity(product_id)
+        elif isinstance(product, Drink):
+            dm.update_quantity(product_id)
         # reset cutomer_money to 0.
         mm.iCustomerMoney = 0
         sProductJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_DUMP_JSON_FILE
@@ -131,5 +134,3 @@ def start_vending_machine(customer_coins):
         mm.dump_money(mMoneyDumpJsonFilePath)
         assert change == save_customer_money - product.iPrice
         assert mm.iChangeMoney == save_change_money + product.iPrice
-
-
