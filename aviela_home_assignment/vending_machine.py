@@ -68,6 +68,10 @@ class VendingMachine:
                 self.print_invalid_coin_error_message()
 
     def dump_products_data(self, sJsonFilePath):
+        """
+        Stored values which created by json.dumps() to the file sJsonFilePath. This critical for persistently purposes.
+        @param sJsonFilePath: json file path for dumping
+        """
         pProducts = self._dmDrinkManager.dDrinks
         pProducts.update(self._smSweetManager.sSweets)
         # create a document (after update product quantity) in json format
