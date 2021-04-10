@@ -12,4 +12,6 @@
 .coverage
 aviela_home_assignment/json/MoneyDataDump.json
 aviela_home_assignment/json/ProductDataDump.json
+aviela_home_assignment/json/SweetDataDump.json
+aviela_home_assignment/json/DrinkDataDump.json
 .idea
