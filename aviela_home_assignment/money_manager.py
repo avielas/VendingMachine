@@ -36,7 +36,8 @@ class MoneyManager:
     def iCustomerMoney(self, x):
         self._iCustomerMoney = x
 
-    def record_money(self, sJsonData, sJsonFilePath):
+    def dump_money(self, sJsonFilePath):
+        mMoneyJsonToDump = json.dumps([self.__dict__])
         # Open the file for storing money data when the drink has been paid (we can overwrite MoneyData.json, but keep it separately to make it clear)
         with open(sJsonFilePath, "w") as IOFile:
-            IOFile.write(sJsonData)
+            IOFile.write(mMoneyJsonToDump)

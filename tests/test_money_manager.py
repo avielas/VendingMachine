@@ -31,8 +31,8 @@ def test_record_money():
     # save the new amount into file
     money_manager.iChangeMoney = money_manager.iChangeMoney - 2
     money_manager.iCustomerMoney = money_manager.iCustomerMoney - 3
-    updated_money_json = json.dumps([money_manager.__dict__])
-    money_manager.record_money(updated_money_json, dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_DUMP_JSON_FILE)
+    mMoneyDumpJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_DUMP_JSON_FILE
+    money_manager.dump_money(mMoneyDumpJsonFilePath)
 
     # create another MoneyManager from stored file and assert the values
     money_manager_after = MoneyManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_DUMP_JSON_FILE)

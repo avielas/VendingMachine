@@ -1,5 +1,7 @@
 import json
 from aviela_home_assignment.consts import Consts
+from aviela_home_assignment.drink import Drink
+from aviela_home_assignment.sweet import Sweet
 
 
 class VendingMachine:
@@ -54,42 +56,44 @@ class VendingMachine:
                     # update machine change
                     self._mmMoneyManager.iChangeMoney = self._mmMoneyManager.iChangeMoney + pProduct.iPrice
                     pProduct.iQuantity = pProduct.iQuantity - 1
+                    if pProduct.iQuantity == 0:
+                        self.remove_product(pProducts, iProductId)
                     self._mmMoneyManager.iCustomerMoney = 0
-                    sJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.PRODUCT_DATA_DUMP_JSON_FILE
-                    self.dump_products_data(sJsonFilePath)
-                    # create a format json document from money_manager.
-                    sMoneyJsonToDump = json.dumps([self._mmMoneyManager.__dict__])
+                    sProductJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.PRODUCT_DATA_DUMP_JSON_FILE
+                    sDrinkJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.DRINK_DATA_DUMP_JSON_FILE
+                    sSweetJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.SWEET_DATA_DUMP_JSON_FILE
+                    self.dump_products(sProductJsonFilePath, sDrinkJsonFilePath, sSweetJsonFilePath)
                     # save the new amount into file
-                    self._mmMoneyManager.record_money(sMoneyJsonToDump, Consts.JSON_DIR_PATH_PROGRAM + Consts.MONEY_DATA_DUMP_JSON_FILE)
+                    mMoneyDumpJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.MONEY_DATA_DUMP_JSON_FILE
+                    self._mmMoneyManager.dump_money(mMoneyDumpJsonFilePath)
                     self.print_change_money(iChange)
                     self.print_product_payment(pProduct.sName)
                 break
             else:
                 self.print_invalid_coin_error_message()
 
-    def dump_products_data(self, sJsonFilePath):
-        """
-        Stored values which created by json.dumps() to the file sJsonFilePath. This critical for persistently purposes.
-        @param sJsonFilePath: json file path for dumping
-        """
-        pProducts = self._dmDrinkManager.dDrinks
-        pProducts.update(self._smSweetManager.sSweets)
+    def dump_products(self, sProductJsonFilePath, sDrinkJsonFilePath, sSweetJsonFilePath):
+        self._dmDrinkManager.dump_products(sDrinkJsonFilePath)
+        self._smSweetManager.dump_products(sSweetJsonFilePath)
+        pProducts = self._dmDrinkManager.pProducts.copy()
+        pProducts.update(self._smSweetManager.pProducts)
         # create a document (after update product quantity) in json format
         values = pProducts.values()
         pProductJsonToDump = json.dumps([productObj.__dict__ for productObj in values])
         # save the up-to-date product quantity to file
-        with open(sJsonFilePath, "w") as IOFile:
+        with open(sProductJsonFilePath, "w") as IOFile:
             IOFile.write(pProductJsonToDump)
 
     def get_products_by_type(self, sProductsType):
         if sProductsType == Consts.ALL:
-            pProducts = self._dmDrinkManager.dDrinks
-            pProducts.update(self._smSweetManager.sSweets)
+            # make a copy for not change the source dict
+            pProducts = self._dmDrinkManager.pProducts.copy()
+            pProducts.update(self._smSweetManager.pProducts)
             return pProducts
         elif sProductsType == Consts.SWEETS:
-            return self._smSweetManager.sSweets
+            return self._smSweetManager.pProducts
         elif sProductsType == Consts.DRINKS:
-            return self._dmDrinkManager.dDrinks
+            return self._dmDrinkManager.pProducts
 
     def print_invalid_coin_error_message(self):
         print("\n*********************************************************************")
@@ -123,3 +127,10 @@ class VendingMachine:
 
     def print_change_money(self, iChangeMoney):
         print(f"Change money is {iChangeMoney} " + Consts.CURRENCY_TYPE + ".")
+
+    def remove_product(self, pProducts, iProductId):
+        pProduct = pProducts[iProductId]
+        if isinstance(pProduct, Sweet):
+            self._smSweetManager.remove_product(iProductId)
+        elif isinstance(pProduct, Drink):
+            self._dmDrinkManager.remove_product(iProductId)
