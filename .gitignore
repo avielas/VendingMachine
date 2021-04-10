@@ -10,6 +10,6 @@
 .pytest_cache
 .cache
 .coverage
-aviela_home_assignment/json/MoneyDataAfterBuyDrink.json
-aviela_home_assignment/json/DrinkDataAfterBuyDrink.json
+aviela_home_assignment/json/MoneyDataDump.json
+aviela_home_assignment/json/ProductDataDump.json
 .idea

@@ -13,12 +13,13 @@ class DrinkManager(ProductManager):
         @param sDrinksJsonFilePath: path to json file which contains available products and their quantity
         """
         self._dDrinks = []
-        # Read DrinkData.json. This will take the id, name, price and quantity data to create drink obj by storing it in the _drink_data dictionary
+        # Read ProductData.json. This will take the id, name, price and quantity data to create drink obj by storing it in the _drink_data dictionary
         with open(sDrinksJsonFilePath) as fd:
             lDrinks = json.load(fd)
             for dDrink in lDrinks:
-                drink = Drink(dDrink["_iUid"], dDrink["_sName"], dDrink["_iPrice"], dDrink["_iQuantity"])
-                self.add_drink_data(drink)
+                if dDrink["_sProductFamily"] == Consts.DRINKS:
+                    drink = Drink(dDrink["_iUid"], dDrink["_sName"], dDrink["_iPrice"], dDrink["_iQuantity"])
+                    self.add_drink_data(drink)
             # convert list to dictionary with ID as a key
             self._dDrinks = dict((x.iUid, x) for x in self._dDrinks)
 
@@ -37,9 +38,3 @@ class DrinkManager(ProductManager):
                 sAvailableProductWithPrice = "{} {} {} {} {} {}".format(dDrink.iUid, ":", dDrink.sName, "price", dDrink.iPrice, Consts.CURRENCY_TYPE)
                 lAvailableProducts.append(sAvailableProductWithPrice)
         return lAvailableProducts
-
-    def record_object_data(self, sJsonData, sJsonFilePath):
-        # Open the file for storing information of the number of cans when the drink is dispensed (we can override DrinkData.json, but keep it separately to make it clear)
-        with open(sJsonFilePath, "w") as IOFile:
-            IOFile.write(sJsonData)
-

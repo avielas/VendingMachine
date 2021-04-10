@@ -2,7 +2,7 @@ from aviela_home_assignment.base.product import Product
 from aviela_home_assignment.consts import Consts
 
 
-class Drink(Product):
+class Sweet(Product):
     """
     Drink class which use from base Product
     """
@@ -10,4 +10,4 @@ class Drink(Product):
         """
         For variables documentation see Product class init description
         """
-        super().__init__(iUid, sName, iPrice, iQuantity, Consts.DRINKS)
+        super().__init__(iUid, sName, iPrice, iQuantity, Consts.SWEETS)

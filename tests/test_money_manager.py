@@ -10,7 +10,7 @@ def test_getters_and_setters():
     Asserts the value which stored on variables
     """
     dir_path = os.path.dirname(os.path.dirname(__file__)) + "\\"
-    money_manager = MoneyManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_JSON_FILE_NAME)
+    money_manager = MoneyManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_JSON_FILE)
     money_manager.iCustomerMoney = 200
     expected = 200
     assert money_manager.iCustomerMoney == expected
@@ -25,16 +25,16 @@ def test_record_money():
     Asserts the value which stored previously by record_money function
     """
     dir_path = os.path.dirname(os.path.dirname(__file__)) + "\\"
-    money_manager = MoneyManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_JSON_FILE_NAME)
+    money_manager = MoneyManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_JSON_FILE)
     curr_change_money = money_manager.iChangeMoney
     curr_customer_money = money_manager.iCustomerMoney
     # save the new amount into file
     money_manager.iChangeMoney = money_manager.iChangeMoney - 2
     money_manager.iCustomerMoney = money_manager.iCustomerMoney - 3
     updated_money_json = json.dumps([money_manager.__dict__])
-    money_manager.record_money(updated_money_json, dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_AFTER_BUY_JSON_FILE_NAME)
+    money_manager.record_money(updated_money_json, dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_DUMP_JSON_FILE)
 
     # create another MoneyManager from stored file and assert the values
-    money_manager_after = MoneyManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_AFTER_BUY_JSON_FILE_NAME)
+    money_manager_after = MoneyManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_DUMP_JSON_FILE)
     assert money_manager_after.iChangeMoney == curr_change_money - 2
     assert money_manager_after.iCustomerMoney == curr_customer_money - 3

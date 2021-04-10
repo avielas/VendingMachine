@@ -4,17 +4,19 @@ class Product:
     """
     Vending Machine's Product
     """
-    def __init__(self, iUid: int, sName: str, iPrice: int, iQuantity: int):
+    def __init__(self, iUid: int, sName: str, iPrice: int, iQuantity: int, sProductFamily: str):
         """
         @param iUid: Uniq id for describe each product. Firstly initialize by JSON file and never change manually by program
         @param sName: Product's name which visible to user. Firstly initialize by JSON file and never change manually by program
         @param iPrice: Product's price which visible to user. Firstly initialize by JSON file and never change manually by program
         @param iQuantity: Product's quantity which visible to user. The VM update this value in any change
+        @param sProductFamily: Product's family which describe the Product's group. useful for filtering purposes
         """
         self._iUid = iUid
         self._sName = sName
         self._iPrice = iPrice
         self.iQuantity = iQuantity
+        self._sProductFamily = sProductFamily
 
     @property
     def iUid(self):
@@ -35,3 +37,7 @@ class Product:
     @iQuantity.setter
     def iQuantity(self, x):
         self._iQuantity = x
+
+    @property
+    def sProductFamily(self):
+        return self._sProductFamily
