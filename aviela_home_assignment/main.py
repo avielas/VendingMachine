@@ -8,7 +8,7 @@ from aviela_home_assignment.consts import Consts
 def main():
     sm = SweetManager(Consts.JSON_DIR_PATH_PROGRAM + Consts.PRODUCT_DATA_JSON_FILE)
     dm = DrinkManager(Consts.JSON_DIR_PATH_PROGRAM + Consts.PRODUCT_DATA_JSON_FILE)
-    mm = MoneyManager(Consts.JSON_DIR_PATH_PROGRAM + Consts.COINS_DATA_JSON_FILE)
+    mm = MoneyManager(Consts.JSON_DIR_PATH_PROGRAM + Consts.MONEY_DATA_JSON_FILE)
     vm = VendingMachine(sm, dm, mm)
     vm.start_vending_machine()
 

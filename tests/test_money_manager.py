@@ -10,10 +10,10 @@ def test_getters_and_setters():
     Asserts the value which stored on variables
     """
     dir_path = os.path.dirname(os.path.dirname(__file__)) + "\\"
-    money_manager = MoneyManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.COINS_DATA_JSON_FILE)
-    money_manager.dCustomerCoins = 200
+    money_manager = MoneyManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_JSON_FILE)
+    money_manager.iCustomerMoney = 200
     expected = 200
-    assert money_manager.dCustomerCoins == expected
+    assert money_manager.iCustomerMoney == expected
 
     money_manager.iChangeMoney = 100
     expected = 100
@@ -25,16 +25,16 @@ def test_record_money():
     Asserts the value which stored previously by record_money function
     """
     dir_path = os.path.dirname(os.path.dirname(__file__)) + "\\"
-    money_manager = MoneyManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.COINS_DATA_JSON_FILE)
+    money_manager = MoneyManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_JSON_FILE)
     curr_change_money = money_manager.iChangeMoney
-    curr_customer_money = money_manager.dCustomerCoins
+    curr_customer_money = money_manager.iCustomerMoney
     # save the new amount into file
     money_manager.iChangeMoney = money_manager.iChangeMoney - 2
-    money_manager.dCustomerCoins = money_manager.dCustomerCoins - 3
-    mMoneyDumpJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.COINS_DATA_DUMP_JSON_FILE
+    money_manager.iCustomerMoney = money_manager.iCustomerMoney - 3
+    mMoneyDumpJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_DUMP_JSON_FILE
     money_manager.dump_money(mMoneyDumpJsonFilePath)
 
     # create another MoneyManager from stored file and assert the values
-    money_manager_after = MoneyManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.COINS_DATA_DUMP_JSON_FILE)
+    money_manager_after = MoneyManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_DUMP_JSON_FILE)
     assert money_manager_after.iChangeMoney == curr_change_money - 2
-    assert money_manager_after.dCustomerCoins == curr_customer_money - 3
+    assert money_manager_after.iCustomerMoney == curr_customer_money - 3
