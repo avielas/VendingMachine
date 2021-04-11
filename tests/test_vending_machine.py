@@ -18,7 +18,7 @@ def test_dump_products_data_drink():
     dir_path = os.path.dirname(os.path.dirname(__file__)) + "\\"
     dm = DrinkManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
     sm = SweetManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
-    mm = MoneyManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_JSON_FILE)
+    mm = MoneyManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.COINS_DATA_JSON_FILE)
     vm = VendingMachine(sm, dm, mm)
     drink = dm.pProducts[1]
     curr_drink_quantity = drink.iQuantity
@@ -43,7 +43,7 @@ def test_dump_products_data_sweet():
     dir_path = os.path.dirname(os.path.dirname(__file__)) + "\\"
     dm = DrinkManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
     sm = SweetManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
-    mm = MoneyManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_JSON_FILE)
+    mm = MoneyManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.COINS_DATA_JSON_FILE)
     vm = VendingMachine(sm, dm, mm)
     sweet = sm.pProducts[6]
     curr_sweet_quantity = sweet.iQuantity
@@ -95,13 +95,13 @@ def test_start_vending_machine_4():
 
 def start_vending_machine(customer_coins):
     dir_path = os.path.dirname(os.path.dirname(__file__)) + "\\"
-    mm = MoneyManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_JSON_FILE)
+    mm = MoneyManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.COINS_DATA_JSON_FILE)
     dm = DrinkManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
     sm = SweetManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
     vm = VendingMachine(sm, dm, mm)
 
     for coin in customer_coins:
-        mm.iCustomerMoney = mm.iCustomerMoney + coin
+        mm.dCustomerCoins = mm.dCustomerCoins + coin
 
     pProducts = dm.pProducts
     pProducts.update(sm.pProducts)
@@ -109,13 +109,13 @@ def start_vending_machine(customer_coins):
     product_id = random.randint(1, product_data_len)
 
     product = pProducts[product_id]
-    save_customer_money = mm.iCustomerMoney
+    save_customer_money = mm.dCustomerCoins
     save_change_money = mm.iChangeMoney
 
-    if mm.iCustomerMoney < product.iPrice:
-        assert mm.iCustomerMoney < product.iPrice
+    if mm.dCustomerCoins < product.iPrice:
+        assert mm.dCustomerCoins < product.iPrice
     else:
-        change = mm.iCustomerMoney - product.iPrice
+        change = mm.dCustomerCoins - product.iPrice
         # update machine change
         mm.iChangeMoney = mm.iChangeMoney + product.iPrice
         # update product quantity
@@ -124,13 +124,13 @@ def start_vending_machine(customer_coins):
         elif isinstance(product, Drink):
             dm.update_quantity(product_id)
         # reset cutomer_money to 0.
-        mm.iCustomerMoney = 0
+        mm.dCustomerCoins = 0
         sProductJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_DUMP_JSON_FILE
         sDrinkJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.DRINK_DATA_DUMP_JSON_FILE
         sSweetJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.SWEET_DATA_DUMP_JSON_FILE
         vm.dump_products(sProductJsonFilePath, sDrinkJsonFilePath, sSweetJsonFilePath)
         # save the new amount into file
-        mMoneyDumpJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_DUMP_JSON_FILE
+        mMoneyDumpJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.COINS_DATA_DUMP_JSON_FILE
         mm.dump_money(mMoneyDumpJsonFilePath)
         assert change == save_customer_money - product.iPrice
         assert mm.iChangeMoney == save_change_money + product.iPrice
