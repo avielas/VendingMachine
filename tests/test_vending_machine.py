@@ -3,6 +3,7 @@ from aviela_home_assignment.money_manager import MoneyManager
 from aviela_home_assignment.drink_manager import DrinkManager
 from aviela_home_assignment.sweet_manager import SweetManager
 from aviela_home_assignment.vending_machine import VendingMachine
+from aviela_home_assignment.vending_machine_printer import VendingMachinePrinter
 from aviela_home_assignment.consts import Consts
 from aviela_home_assignment.drink import Drink
 from aviela_home_assignment.sweet import Sweet
@@ -18,7 +19,8 @@ def test_dump_products_data_drink():
     DM = DrinkManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
     SM = SweetManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
     MM = MoneyManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_JSON_FILE)
-    VM = VendingMachine(SM, DM, MM)
+    VMP = VendingMachinePrinter()
+    VM = VendingMachine(SM, DM, MM, VMP)
     drink = DM.dProducts[1]
     CurrDrinkQuantity = drink.iQuantity
     DM.UpdateQuantity(drink.iUid)
@@ -43,7 +45,8 @@ def test_dump_products_data_sweet():
     DM = DrinkManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
     SM = SweetManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
     MM = MoneyManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_JSON_FILE)
-    VM = VendingMachine(SM, DM, MM)
+    VMP = VendingMachinePrinter()
+    VM = VendingMachine(SM, DM, MM, VMP)
     sweet = SM.dProducts[6]
     CurrSweetQuantity = sweet.iQuantity
     SM.UpdateQuantity(sweet.iUid)
@@ -97,7 +100,8 @@ def start_vending_machine(CustomerCoins):
     MM = MoneyManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_JSON_FILE)
     DM = DrinkManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
     SM = SweetManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
-    VM = VendingMachine(SM, DM, MM)
+    VMP = VendingMachinePrinter()
+    VM = VendingMachine(SM, DM, MM, VMP)
 
     # __CollectCoinsFromUser
     for Coin in CustomerCoins:
