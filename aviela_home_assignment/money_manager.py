@@ -32,23 +32,23 @@ class MoneyManager:
     def iCustomerChangeMoney(self):
         return self._iCustomerChangeMoney
 
-    def dump_money(self, sJsonFilePath):
-        mMoneyJsonToDump = json.dumps([self.__dict__])
+    def DumpMoney(self, sJsonFilePath):
+        sMoneyJsonToDump = json.dumps([self.__dict__])
         # Open the file for storing money data when the drink has been paid (we can overwrite MoneyData.json, but keep it separately to make it clear)
         with open(sJsonFilePath, "w") as IOFile:
-            IOFile.write(mMoneyJsonToDump)
+            IOFile.write(sMoneyJsonToDump)
 
-    def add_to_customer_money(self, x):
+    def AddToCustomerMoney(self, x):
         self._iCustomerMoney = self._iCustomerMoney + x
 
-    def add_to_vm_change_money(self, x):
+    def AddToVmChangeMoney(self, x):
         self._iVmChangeMoney = self._iVmChangeMoney + x
 
-    def customer_have_enough_money(self, pProduct):
-        return self._iCustomerMoney >= pProduct.iPrice
+    def CustomerHaveEnoughMoney(self, Product):
+        return self._iCustomerMoney >= Product.iPrice
 
-    def add_to_customer_change_money(self, iProductPrice):
+    def AddToCustomerChangeMoney(self, iProductPrice):
         self._iCustomerChangeMoney = self._iCustomerMoney - iProductPrice
 
-    def have_enough_change(self):
+    def HaveEnoughChange(self):
         return self._iCustomerChangeMoney < self._iVmChangeMoney

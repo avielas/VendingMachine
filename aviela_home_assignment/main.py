@@ -6,11 +6,11 @@ from aviela_home_assignment.consts import Consts
 
 
 def main():
-    sm = SweetManager(Consts.JSON_DIR_PATH_PROGRAM + Consts.PRODUCT_DATA_JSON_FILE)
-    dm = DrinkManager(Consts.JSON_DIR_PATH_PROGRAM + Consts.PRODUCT_DATA_JSON_FILE)
-    mm = MoneyManager(Consts.JSON_DIR_PATH_PROGRAM + Consts.MONEY_DATA_JSON_FILE)
-    vm = VendingMachine(sm, dm, mm)
-    vm.start_vending_machine()
+    SM = SweetManager(Consts.JSON_DIR_PATH_PROGRAM + Consts.PRODUCT_DATA_JSON_FILE)
+    DM = DrinkManager(Consts.JSON_DIR_PATH_PROGRAM + Consts.PRODUCT_DATA_JSON_FILE)
+    MM = MoneyManager(Consts.JSON_DIR_PATH_PROGRAM + Consts.MONEY_DATA_JSON_FILE)
+    VM = VendingMachine(SM, DM, MM)
+    VM.StartVendingMachine()
 
 
 if __name__ == "__main__":

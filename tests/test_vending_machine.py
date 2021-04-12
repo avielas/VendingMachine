@@ -12,123 +12,135 @@ import os
 
 def test_dump_products_data_drink():
     """
-    Asserts the drink value which dumped
+    Asserts the drink values which dumped by DumpProducts
     """
-    dir_path = os.path.dirname(os.path.dirname(__file__)) + "\\"
-    dm = DrinkManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
-    sm = SweetManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
-    mm = MoneyManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_JSON_FILE)
-    vm = VendingMachine(sm, dm, mm)
-    drink = dm.pProducts[1]
-    curr_drink_quantity = drink.iQuantity
-    dm.update_quantity(drink.iUid)
-    sProductJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_DUMP_JSON_FILE
-    sDrinkJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.DRINK_DATA_DUMP_JSON_FILE
-    sSweetJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.SWEET_DATA_DUMP_JSON_FILE
-    vm.dump_products(sProductJsonFilePath, sDrinkJsonFilePath, sSweetJsonFilePath)
+    DirPath = os.path.dirname(os.path.dirname(__file__)) + "\\"
+    DM = DrinkManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
+    SM = SweetManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
+    MM = MoneyManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_JSON_FILE)
+    VM = VendingMachine(SM, DM, MM)
+    drink = DM.dProducts[1]
+    CurrDrinkQuantity = drink.iQuantity
+    DM.UpdateQuantity(drink.iUid)
+    sProductJsonFilePath = DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_DUMP_JSON_FILE
+    sDrinkJsonFilePath = DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.DRINK_DATA_DUMP_JSON_FILE
+    sSweetJsonFilePath = DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.SWEET_DATA_DUMP_JSON_FILE
+    VM.DumpProducts(sProductJsonFilePath, sDrinkJsonFilePath, sSweetJsonFilePath)
     # create another DrinkManager from stored file and assert the value
-    drink_manager_after = DrinkManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_DUMP_JSON_FILE)
-    drink_data_after = drink_manager_after.pProducts
-    drink_after = drink_data_after[1]
-    after_drink_quantity = drink_after.iQuantity
+    DrinkManagerAfter = DrinkManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_DUMP_JSON_FILE)
+    DrinkDataAfter = DrinkManagerAfter.dProducts
+    DrinkAfter = DrinkDataAfter[1]
+    AfterDrinkQuantity = DrinkAfter.iQuantity
 
-    assert curr_drink_quantity - 1 == after_drink_quantity
+    assert CurrDrinkQuantity - 1 == AfterDrinkQuantity
 
 
 def test_dump_products_data_sweet():
     """
-    Asserts the sweet value which dumped
+    Asserts the sweet value which dumped by DumpProducts
     """
-    dir_path = os.path.dirname(os.path.dirname(__file__)) + "\\"
-    dm = DrinkManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
-    sm = SweetManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
-    mm = MoneyManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_JSON_FILE)
-    vm = VendingMachine(sm, dm, mm)
-    sweet = sm.pProducts[6]
-    curr_sweet_quantity = sweet.iQuantity
-    sm.update_quantity(sweet.iUid)
-    sProductJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_DUMP_JSON_FILE
-    sDrinkJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.DRINK_DATA_DUMP_JSON_FILE
-    sSweetJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.SWEET_DATA_DUMP_JSON_FILE
-    vm.dump_products(sProductJsonFilePath, sDrinkJsonFilePath, sSweetJsonFilePath)
+    DirPath = os.path.dirname(os.path.dirname(__file__)) + "\\"
+    DM = DrinkManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
+    SM = SweetManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
+    MM = MoneyManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_JSON_FILE)
+    VM = VendingMachine(SM, DM, MM)
+    sweet = SM.dProducts[6]
+    CurrSweetQuantity = sweet.iQuantity
+    SM.UpdateQuantity(sweet.iUid)
+    sProductJsonFilePath = DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_DUMP_JSON_FILE
+    sDrinkJsonFilePath = DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.DRINK_DATA_DUMP_JSON_FILE
+    sSweetJsonFilePath = DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.SWEET_DATA_DUMP_JSON_FILE
+    VM.DumpProducts(sProductJsonFilePath, sDrinkJsonFilePath, sSweetJsonFilePath)
     # create another SweetManager from stored file and assert the value
-    sweet_manager_after = SweetManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_DUMP_JSON_FILE)
-    sweet_data_after = sweet_manager_after.pProducts
-    sweet_after = sweet_data_after[6]
-    after_sweet_quantity = sweet_after.iQuantity
+    SweetManagerAfter = SweetManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_DUMP_JSON_FILE)
+    SweetDataAfter = SweetManagerAfter.dProducts
+    SweetAfter = SweetDataAfter[6]
+    AfterSweetQuantity = SweetAfter.iQuantity
 
-    assert curr_sweet_quantity - 1 == after_sweet_quantity
+    assert CurrSweetQuantity - 1 == AfterSweetQuantity
 
 
 def test_start_vending_machine_1():
     """
     Validate the Vending Machine's full flow
     """
-    customer_coins = [5, 1, 10]
-    start_vending_machine(customer_coins)
+    CustomerCoins = [5, 1, 10]
+    start_vending_machine(CustomerCoins)
 
 
 def test_start_vending_machine_2():
     """
     Validate the Vending Machine's full flow
     """
-    customer_coins = [5, 1, 10, 10]
-    start_vending_machine(customer_coins)
+    CustomerCoins = [5, 1, 10, 10]
+    start_vending_machine(CustomerCoins)
 
 
 def test_start_vending_machine_3():
     """
     Validate the Vending Machine's full flow
     """
-    customer_coins = [5, 1, 10, 1, 2, 5, 5, 5, 10]
-    start_vending_machine(customer_coins)
+    CustomerCoins = [5, 1, 10, 1, 2, 5, 5, 5, 10]
+    start_vending_machine(CustomerCoins)
 
 
 def test_start_vending_machine_4():
     """
     Validate the Vending Machine's full flow
     """
-    customer_coins = [5, 1, 10, 10, 1, 1, 2, 5, 2, 1, 10, 5]
-    start_vending_machine(customer_coins)
+    CustomerCoins = [5, 1, 10, 10, 1, 1, 2, 5, 2, 1, 10, 5]
+    start_vending_machine(CustomerCoins)
 
 
-def start_vending_machine(customer_coins):
-    dir_path = os.path.dirname(os.path.dirname(__file__)) + "\\"
-    mm = MoneyManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_JSON_FILE)
-    dm = DrinkManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
-    sm = SweetManager(dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
-    vm = VendingMachine(sm, dm, mm)
+def start_vending_machine(CustomerCoins):
+    DirPath = os.path.dirname(os.path.dirname(__file__)) + "\\"
+    MM = MoneyManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_JSON_FILE)
+    DM = DrinkManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
+    SM = SweetManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
+    VM = VendingMachine(SM, DM, MM)
 
-    for coin in customer_coins:
-        mm.add_to_customer_money(coin)
+    # __CollectCoinsFromUser
+    for Coin in CustomerCoins:
+        MM.AddToCustomerMoney(Coin)
 
-    pProducts = dm.pProducts
-    pProducts.update(sm.pProducts)
-    product_data_len = len(pProducts)
-    product_id = random.randint(1, product_data_len)
+    # random __GetProductSelectionFromUser
+    Product = get_product_selection_from_user(DM, SM)
+    SaveCustomerMoney = MM.iCustomerMoney
+    SaveChangeMoney = MM.iVmChangeMoney
 
-    product = pProducts[product_id]
-    save_customer_money = mm.iCustomerMoney
-    save_change_money = mm.iVmChangeMoney
+    if not MM.CustomerHaveEnoughMoney(Product):
+        assert MM.iCustomerMoney < Product.iPrice
 
-    if mm.iCustomerMoney < product.iPrice:
-        assert mm.iCustomerMoney < product.iPrice
-    else:
-        change = mm.iCustomerMoney - product.iPrice
-        mm.add_to_vm_change_money(product.iPrice)
-        # update product quantity
-        if isinstance(product, Sweet):
-            sm.update_quantity(product_id)
-        elif isinstance(product, Drink):
-            dm.update_quantity(product_id)
-        # reset customer money to 0.
-        mm.add_to_customer_money(-1*mm.iCustomerMoney)
-        sProductJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_DUMP_JSON_FILE
-        sDrinkJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.DRINK_DATA_DUMP_JSON_FILE
-        sSweetJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.SWEET_DATA_DUMP_JSON_FILE
-        vm.dump_products(sProductJsonFilePath, sDrinkJsonFilePath, sSweetJsonFilePath)
-        # save the new amount into file
-        mMoneyDumpJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_DUMP_JSON_FILE
-        mm.dump_money(mMoneyDumpJsonFilePath)
-        assert change == save_customer_money - product.iPrice
-        assert mm.iVmChangeMoney == save_change_money + product.iPrice
+    # __HandlePurchase
+    handle_purchase(DirPath, MM, SM, DM, VM, Product)
+
+    assert MM.iCustomerChangeMoney == SaveCustomerMoney - Product.iPrice
+    assert MM.iVmChangeMoney == SaveChangeMoney + Product.iPrice
+
+
+def handle_purchase(DirPath, MM, SM, DM, VM, Product):
+    MM.AddToCustomerChangeMoney(Product.iPrice)
+    MM.AddToVmChangeMoney(Product.iPrice)
+    # update product quantity
+    if isinstance(Product, Sweet):
+        SM.UpdateQuantity(Product.iUid)
+    elif isinstance(Product, Drink):
+        DM.UpdateQuantity(Product.iUid)
+    # reset customer money to 0.
+    MM.AddToCustomerMoney(-1 * MM.iCustomerMoney)
+    sProductJsonFilePath = DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_DUMP_JSON_FILE
+    sDrinkJsonFilePath = DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.DRINK_DATA_DUMP_JSON_FILE
+    sSweetJsonFilePath = DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.SWEET_DATA_DUMP_JSON_FILE
+    VM.DumpProducts(sProductJsonFilePath, sDrinkJsonFilePath, sSweetJsonFilePath)
+    # save the new amount into file
+    mMoneyDumpJsonFilePath = DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_DUMP_JSON_FILE
+    MM.DumpMoney(mMoneyDumpJsonFilePath)
+
+
+def get_product_selection_from_user(DM, SM):
+    dProducts = DM.dProducts
+    dProducts.update(SM.dProducts)
+    ProductDataLen = len(dProducts)
+    ProductId = random.randint(1, ProductDataLen)
+    Product = dProducts[ProductId]
+    return Product
