@@ -8,7 +8,6 @@ from aviela_home_assignment.drink import Drink
 from aviela_home_assignment.sweet import Sweet
 import random
 import os
-import json
 
 
 def test_dump_products_data_drink():
@@ -101,7 +100,7 @@ def start_vending_machine(customer_coins):
     vm = VendingMachine(sm, dm, mm)
 
     for coin in customer_coins:
-        mm.iCustomerMoney = mm.iCustomerMoney + coin
+        mm.add_to_customer_money(coin)
 
     pProducts = dm.pProducts
     pProducts.update(sm.pProducts)
@@ -110,21 +109,20 @@ def start_vending_machine(customer_coins):
 
     product = pProducts[product_id]
     save_customer_money = mm.iCustomerMoney
-    save_change_money = mm.iChangeMoney
+    save_change_money = mm.iVmChangeMoney
 
     if mm.iCustomerMoney < product.iPrice:
         assert mm.iCustomerMoney < product.iPrice
     else:
         change = mm.iCustomerMoney - product.iPrice
-        # update machine change
-        mm.iChangeMoney = mm.iChangeMoney + product.iPrice
+        mm.add_to_vm_change_money(product.iPrice)
         # update product quantity
         if isinstance(product, Sweet):
             sm.update_quantity(product_id)
         elif isinstance(product, Drink):
             dm.update_quantity(product_id)
-        # reset cutomer_money to 0.
-        mm.iCustomerMoney = 0
+        # reset customer money to 0.
+        mm.add_to_customer_money(-1*mm.iCustomerMoney)
         sProductJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_DUMP_JSON_FILE
         sDrinkJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.DRINK_DATA_DUMP_JSON_FILE
         sSweetJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.SWEET_DATA_DUMP_JSON_FILE
@@ -133,4 +131,4 @@ def start_vending_machine(customer_coins):
         mMoneyDumpJsonFilePath = dir_path + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_DUMP_JSON_FILE
         mm.dump_money(mMoneyDumpJsonFilePath)
         assert change == save_customer_money - product.iPrice
-        assert mm.iChangeMoney == save_change_money + product.iPrice
+        assert mm.iVmChangeMoney == save_change_money + product.iPrice

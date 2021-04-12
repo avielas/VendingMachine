@@ -24,7 +24,7 @@ class VendingMachine:
             sUserInput = str(input("Please insert coin " + sCoins + " " + str(Consts.CURRENCY_TYPE) + ". To place order, press 0: "))
             # If you drop valid coin, add the money that has been added continuously with customer_money
             if sUserInput in Consts.COINS_LIST:
-                self._mmMoneyManager.iCustomerMoney = self._mmMoneyManager.iCustomerMoney + int(sUserInput)
+                self._mmMoneyManager.add_to_customer_money(int(sUserInput))
             elif sUserInput == 'a':
                 sProductsType = Consts.ALL
             elif sUserInput == 'd':
@@ -48,17 +48,22 @@ class VendingMachine:
                     else:
                         self.print_invalid_product_id_error_mesaage()
                         continue
-                if self._mmMoneyManager.iCustomerMoney < pProduct.iPrice:
-                    self.print_not_enough_money_to_buy_product_error_message(pProduct)
+                if not self._mmMoneyManager.customer_have_enough_money(pProduct.iPrice):
+                    self.print_not_enough_money_error_message(pProduct)
                     continue
                 else:
-                    iChange = self._mmMoneyManager.iCustomerMoney - pProduct.iPrice
-                    # update machine change
-                    self._mmMoneyManager.iChangeMoney = self._mmMoneyManager.iChangeMoney + pProduct.iPrice
+                    self._mmMoneyManager.add_to_customer_change_money(pProduct.iPrice)
+                    self._mmMoneyManager.add_to_vm_change_money(pProduct.iPrice)
+                    if not self._mmMoneyManager.have_enough_change():
+                        self.print_not_enough_change_error_message()
+                        self._mmMoneyManager.add_to_customer_change_money(-1*pProduct.iPrice)
+                        self._mmMoneyManager.add_to_vm_change_money(-1*pProduct.iPrice)
+                        continue
                     self.update_quantity(pProducts, iProductId)
                     if pProduct.iQuantity == 0:
                         self.remove_product(pProducts, iProductId)
-                    self._mmMoneyManager.iCustomerMoney = 0
+                    # reset customer money to zero
+                    self._mmMoneyManager.add_to_customer_money(-1*self._mmMoneyManager.iCustomerMoney)
                     sProductJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.PRODUCT_DATA_DUMP_JSON_FILE
                     sDrinkJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.DRINK_DATA_DUMP_JSON_FILE
                     sSweetJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.SWEET_DATA_DUMP_JSON_FILE
@@ -66,7 +71,7 @@ class VendingMachine:
                     # save the new amount into file
                     mMoneyDumpJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.MONEY_DATA_DUMP_JSON_FILE
                     self._mmMoneyManager.dump_money(mMoneyDumpJsonFilePath)
-                    self.print_change_money(iChange)
+                    self.print_change_money(self._mmMoneyManager.iCustomerChangeMoney)
                     self.print_product_payment(pProduct.sName)
                 break
             else:
@@ -100,10 +105,15 @@ class VendingMachine:
         print("********* You inserted invalid coin. please insert again ! **********")
         print("*********************************************************************")
 
-    def print_not_enough_money_to_buy_product_error_message(self, dDrink):
+    def print_not_enough_money_error_message(self, dDrink):
         print("\n************************************************************************************************************")
         print("***** The money that drops(" + str(self._mmMoneyManager.iCustomerMoney) + ") is less than the price(" + str(
             dDrink.iPrice) + ") of the product, please insert more money !!! *****")
+        print("************************************************************************************************************\n")
+
+    def print_not_enough_change_error_message(self):
+        print("\n************************************************************************************************************")
+        print("******************************* The Vending Machine don't have enough change *********************************")
         print("************************************************************************************************************\n")
 
     def print_invalid_product_id_error_mesaage(self):
