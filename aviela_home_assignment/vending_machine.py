@@ -8,17 +8,28 @@ class VendingMachine:
     """
     VendingMachine class which run the main flow
     """
+
     def __init__(self, sm, dm, mm):
         self._smSweetManager = sm
         self._dmDrinkManager = dm
         self._mmMoneyManager = mm
+        self._sProductsType = Consts.ALL
 
     def start_vending_machine(self):
-        sProductsType = Consts.ALL
         # Open infinity loop which can stop by ctrl+c
         while True:
+            self._CollectCoinsFromUser()
+            pProduct = self._GetProductSelectionFromUser()
+            if not self.vm_have_enough_change(pProduct):
+                continue
+            else:
+                break
+        self._HandlePurchase(pProduct)
+
+    def _CollectCoinsFromUser(self):
+        while True:
             print("\n --- Vending machine --- ")
-            self.print_initial_message(sProductsType)
+            self.print_initial_message(self._sProductsType)
             # Get input from customer
             sCoins = ', '.join(Consts.COINS_LIST)
             sUserInput = str(input("Please insert coin " + sCoins + " " + str(Consts.CURRENCY_TYPE) + ". To place order, press 0: "))
@@ -26,56 +37,62 @@ class VendingMachine:
             if sUserInput in Consts.COINS_LIST:
                 self._mmMoneyManager.add_to_customer_money(int(sUserInput))
             elif sUserInput == 'a':
-                sProductsType = Consts.ALL
+                self._sProductsType = Consts.ALL
             elif sUserInput == 'd':
-                sProductsType = Consts.DRINKS
+                self._sProductsType = Consts.DRINKS
             elif sUserInput == 's':
-                sProductsType = Consts.SWEETS
+                self._sProductsType = Consts.SWEETS
             # If you click to select the product
             elif sUserInput == '0':
-                while True:
-                    self.print_initial_message(sProductsType)
-                    # Keep what the customer choose to drink
-                    try:
-                        iProductId = int(input("Please give the id of the product you want: "))
-                    except ValueError:
-                        self.print_invalid_product_id_error_mesaage()
-                        continue
-                    pProducts = self.get_products_by_type(sProductsType)
-                    if iProductId in pProducts:
-                        pProduct = pProducts[iProductId]
-                        break
-                    else:
-                        self.print_invalid_product_id_error_mesaage()
-                        continue
-                if not self._mmMoneyManager.customer_have_enough_money(pProduct.iPrice):
-                    self.print_not_enough_money_error_message(pProduct)
-                    continue
-                else:
-                    self._mmMoneyManager.add_to_customer_change_money(pProduct.iPrice)
-                    self._mmMoneyManager.add_to_vm_change_money(pProduct.iPrice)
-                    if not self._mmMoneyManager.have_enough_change():
-                        self.print_not_enough_change_error_message()
-                        self._mmMoneyManager.add_to_customer_change_money(-1*pProduct.iPrice)
-                        self._mmMoneyManager.add_to_vm_change_money(-1*pProduct.iPrice)
-                        continue
-                    self.update_quantity(pProducts, iProductId)
-                    if pProduct.iQuantity == 0:
-                        self.remove_product(pProducts, iProductId)
-                    # reset customer money to zero
-                    self._mmMoneyManager.add_to_customer_money(-1*self._mmMoneyManager.iCustomerMoney)
-                    sProductJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.PRODUCT_DATA_DUMP_JSON_FILE
-                    sDrinkJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.DRINK_DATA_DUMP_JSON_FILE
-                    sSweetJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.SWEET_DATA_DUMP_JSON_FILE
-                    self.dump_products(sProductJsonFilePath, sDrinkJsonFilePath, sSweetJsonFilePath)
-                    # save the new amount into file
-                    mMoneyDumpJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.MONEY_DATA_DUMP_JSON_FILE
-                    self._mmMoneyManager.dump_money(mMoneyDumpJsonFilePath)
-                    self.print_change_money(self._mmMoneyManager.iCustomerChangeMoney)
-                    self.print_product_payment(pProduct.sName)
                 break
             else:
                 self.print_invalid_coin_error_message()
+
+    def _GetProductSelectionFromUser(self):
+        while True:
+            self.print_initial_message(self._sProductsType)
+            print(f"If you want to insert more coins, press 'i'.")
+            sUserInput = str(input("Please give the id of the product you want: "))
+            if sUserInput == 'a':
+                self._sProductsType = Consts.ALL
+            elif sUserInput == 'd':
+                self._sProductsType = Consts.DRINKS
+            elif sUserInput == 's':
+                self._sProductsType = Consts.SWEETS
+            elif sUserInput == 'i':
+                self._CollectCoinsFromUser()
+            else:
+                try:
+                    iProductId = int(sUserInput)
+                    pProducts = self.get_products_by_type(self._sProductsType)
+                    if iProductId in pProducts:
+                        pProduct = pProducts[iProductId]
+                        if not self._mmMoneyManager.customer_have_enough_money(pProduct):
+                            self.print_not_enough_money_error_message(pProduct)
+                            continue
+                        return pProduct
+                    else:
+                        self.print_invalid_product_id_error_mesaage()
+                        continue
+                except ValueError:
+                    self.print_invalid_product_id_error_mesaage()
+                    continue
+
+    def _HandlePurchase(self, pProduct):
+        self.update_quantity(pProduct)
+        if pProduct.iQuantity == 0:
+            self.remove_product(pProduct)
+        # reset customer money to zero
+        self._mmMoneyManager.add_to_customer_money(-1 * self._mmMoneyManager.iCustomerMoney)
+        sProductJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.PRODUCT_DATA_DUMP_JSON_FILE
+        sDrinkJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.DRINK_DATA_DUMP_JSON_FILE
+        sSweetJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.SWEET_DATA_DUMP_JSON_FILE
+        self.dump_products(sProductJsonFilePath, sDrinkJsonFilePath, sSweetJsonFilePath)
+        # save the new amount into file
+        mMoneyDumpJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.MONEY_DATA_DUMP_JSON_FILE
+        self._mmMoneyManager.dump_money(mMoneyDumpJsonFilePath)
+        self.print_change_money(self._mmMoneyManager.iCustomerChangeMoney)
+        self.print_product_payment(pProduct.sName)
 
     def dump_products(self, sProductJsonFilePath, sDrinkJsonFilePath, sSweetJsonFilePath):
         self._dmDrinkManager.dump_products(sDrinkJsonFilePath)
@@ -138,16 +155,24 @@ class VendingMachine:
     def print_change_money(self, iChangeMoney):
         print(f"Change money is {iChangeMoney} " + Consts.CURRENCY_TYPE + ".")
 
-    def remove_product(self, pProducts, iProductId):
-        pProduct = pProducts[iProductId]
+    def remove_product(self, pProduct):
         if isinstance(pProduct, Sweet):
-            self._smSweetManager.remove_product(iProductId)
+            self._smSweetManager.remove_product(pProduct.iUid)
         elif isinstance(pProduct, Drink):
-            self._dmDrinkManager.remove_product(iProductId)
+            self._dmDrinkManager.remove_product(pProduct.iUid)
 
-    def update_quantity(self, pProducts, iProductId):
-        pProduct = pProducts[iProductId]
+    def update_quantity(self, pProduct):
         if isinstance(pProduct, Sweet):
-            self._smSweetManager.update_quantity(iProductId)
+            self._smSweetManager.update_quantity(pProduct.iUid)
         elif isinstance(pProduct, Drink):
-            self._dmDrinkManager.update_quantity(iProductId)
+            self._dmDrinkManager.update_quantity(pProduct.iUid)
+
+    def vm_have_enough_change(self, pProduct):
+        self._mmMoneyManager.add_to_customer_change_money(pProduct.iPrice)
+        self._mmMoneyManager.add_to_vm_change_money(pProduct.iPrice)
+        if not self._mmMoneyManager.have_enough_change():
+            self.print_not_enough_change_error_message()
+            self._mmMoneyManager.add_to_customer_change_money(-1 * pProduct.iPrice)
+            self._mmMoneyManager.add_to_vm_change_money(-1 * pProduct.iPrice)
+            return False
+        return True

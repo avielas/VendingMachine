@@ -9,8 +9,9 @@ class MoneyManager:
     def __init__(self, sMoneyJsonPath):
         """
         @param sMoneyJsonPath: JSON path to initialize variables iChangeMoney, iCustomerMoney values
-        @param iChangeMoney: current change money value of the vending machine
+        @param iVmChangeMoney: current change money value of the vending machine
         @param iCustomerMoney: current costumer money value
+        @param iCustomerChangeMoney: current costumer change money value
         """
         # Read MoneyData.json
         with open(sMoneyJsonPath) as IOFile:
@@ -43,8 +44,8 @@ class MoneyManager:
     def add_to_vm_change_money(self, x):
         self._iVmChangeMoney = self._iVmChangeMoney + x
 
-    def customer_have_enough_money(self, iProductPrice):
-        return self._iCustomerMoney >= iProductPrice
+    def customer_have_enough_money(self, pProduct):
+        return self._iCustomerMoney >= pProduct.iPrice
 
     def add_to_customer_change_money(self, iProductPrice):
         self._iCustomerChangeMoney = self._iCustomerMoney - iProductPrice
