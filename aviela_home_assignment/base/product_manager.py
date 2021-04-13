@@ -17,14 +17,15 @@ class ProductManager:
 
     def GetAvailableProducts(self):
         """
-        Get print list of all products with quantity greater than 0
+        Get dict of all products with quantity greater than 0
         """
-        lAvailableProducts = []
-        for pProduct in self.dProducts.values():
-            if pProduct.iQuantity > 0:
-                sAvailableProductWithPrice = "{} {} {} {} {} {}".format(pProduct.iUid, ":", pProduct.sName, "price", pProduct.iPrice, Consts.CURRENCY_TYPE)
-                lAvailableProducts.append(sAvailableProductWithPrice)
-        return lAvailableProducts
+        dAvailableProducts = dict([])
+        for Product in self.dProducts.values():
+            if Product.iQuantity > 0:
+                dAvailableProducts[Product.iUid] = Product
+                # sAvailableProductWithPrice = "{} {} {} {} {} {}".format(pProduct.iUid, ":", pProduct.sName, "price", pProduct.iPrice, Consts.CURRENCY_TYPE)
+                # lAvailableProducts.append(sAvailableProductWithPrice)
+        return dAvailableProducts
 
     @property
     def dProducts(self):
@@ -33,7 +34,7 @@ class ProductManager:
     def _AddProduct(self, iUid, Product):
         self._dProducts[iUid] = Product
 
-    def _RemoveProduct(self, iUid):
+    def RemoveProduct(self, iUid):
         if iUid in self._dProducts:
             del self._dProducts[iUid]
         else:

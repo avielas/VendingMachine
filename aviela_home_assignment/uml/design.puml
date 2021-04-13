@@ -27,6 +27,7 @@ class VendingMachinePrinter{
     +void InitialMessage(sProductsType, AvailableDrinks, AvailableSweets, iCustomerMoney)
     +void ProductPayment(sProductName)
     +void ChangeMoney(iChangeMoney)
+    +void CreatePrintListFromDict(dProducts)
 }
 
 class MoneyManager{
@@ -95,7 +96,7 @@ abstract class ProductManager{
     +void {abstract} _AddProducts()
     +lAvailableProducts GetAvailableProducts()
     +void _AddProduct(iUid, Product)
-    +void _RemoveProduct(iUid)
+    +void RemoveProduct(iUid)
     +void DumpProducts(sJsonFilePath)
     +void UpdateQuantity(iProductId)
 }

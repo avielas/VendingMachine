@@ -43,3 +43,12 @@ class VendingMachinePrinter:
 
     def ChangeMoney(self, iChangeMoney):
         print(f"Change money is {iChangeMoney} " + Consts.CURRENCY_TYPE + ".")
+
+    def CreatePrintListFromDict(self, dProducts):
+        lAvailableProducts = []
+        for Product in dProducts.values():
+            if Product.iQuantity > 0:
+                sAvailableProductWithPrice = "{} {} {} {} {} {}".format(Product.iUid, ":", Product.sName, "price", Product.iPrice, Consts.CURRENCY_TYPE)
+                lAvailableProducts.append(sAvailableProductWithPrice)
+        return lAvailableProducts
+

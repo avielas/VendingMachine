@@ -31,8 +31,10 @@ class VendingMachine:
         while True:
             print("\n --- Vending machine --- ")
             AvailableDrinks = self.__DrinkManager.GetAvailableProducts()
+            AvailableDrinksToPrint = self.__VendingMachinePrinter.CreatePrintListFromDict(AvailableDrinks)
             AvailableSweets = self.__SweetManager.GetAvailableProducts()
-            self.__VendingMachinePrinter.InitialMessage(self.__sProductsType, AvailableDrinks, AvailableSweets, self.__MoneyManager.iCustomerMoney)
+            AvailableSweetsToPrint = self.__VendingMachinePrinter.CreatePrintListFromDict(AvailableSweets)
+            self.__VendingMachinePrinter.InitialMessage(self.__sProductsType, AvailableDrinksToPrint, AvailableSweetsToPrint, self.__MoneyManager.iCustomerMoney)
             # Get input from customer
             sCoins = ', '.join(Consts.COINS_LIST)
             sUserInput = str(input("Please insert coin " + sCoins + " " + str(Consts.CURRENCY_TYPE) + ". To place order, press 0: "))
@@ -54,8 +56,10 @@ class VendingMachine:
     def __GetProductSelectionFromUser(self):
         while True:
             AvailableDrinks = self.__DrinkManager.GetAvailableProducts()
+            AvailableDrinksToPrint = self.__VendingMachinePrinter.CreatePrintListFromDict(AvailableDrinks)
             AvailableSweets = self.__SweetManager.GetAvailableProducts()
-            self.__VendingMachinePrinter.InitialMessage(self.__sProductsType, AvailableDrinks, AvailableSweets, self.__MoneyManager.iCustomerMoney)
+            AvailableSweetsToPrint = self.__VendingMachinePrinter.CreatePrintListFromDict(AvailableSweets)
+            self.__VendingMachinePrinter.InitialMessage(self.__sProductsType, AvailableDrinksToPrint, AvailableSweetsToPrint, self.__MoneyManager.iCustomerMoney)
             print(f"If you want to insert more coins, press 'i'.")
             sUserInput = str(input("Please give the id of the product you want: "))
             if sUserInput == 'a':
@@ -124,9 +128,9 @@ class VendingMachine:
 
     def __RemoveProduct(self, Product):
         if isinstance(Product, Sweet):
-            self.__SweetManager.__RemoveProduct(Product.iUid)
+            self.__SweetManager.RemoveProduct(Product.iUid)
         elif isinstance(Product, Drink):
-            self.__DrinkManager.__RemoveProduct(Product.iUid)
+            self.__DrinkManager.RemoveProduct(Product.iUid)
 
     def __UpdateQuantity(self, Product):
         if isinstance(Product, Sweet):
