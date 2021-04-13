@@ -8,8 +8,12 @@ class ProductManager:
     ProductManager manage the inventory of the products
     """
     def __init__(self, sProductsJsonFilePath):
+        """
+        @param sProductsJsonFilePath: path to json file which contains available products and their id, quantity, price and family
+        """
         self._dProducts = dict([])
-        self._AddProducts(sProductsJsonFilePath)
+        self._sProductsJsonFilePath = sProductsJsonFilePath
+        self._AddProducts()
 
     def GetAvailableProducts(self):
         """
@@ -30,7 +34,10 @@ class ProductManager:
         self._dProducts[iUid] = Product
 
     def _RemoveProduct(self, iUid):
-        del self._dProducts[iUid]
+        if iUid in self._dProducts:
+            del self._dProducts[iUid]
+        else:
+            raise KeyError("dictionary doesn't contain key")
 
     def DumpProducts(self, sJsonFilePath):
         """
@@ -45,16 +52,15 @@ class ProductManager:
             IOFile.write(pProductJsonToDump)
 
     @abstractmethod
-    def _AddProducts(self, sProductsJsonFilePath):
+    def _AddProducts(self):
         """
         This function take the id, name, price and quantity data to create product obj by storing it in the pProducts dictionary
-        @param sProductsJsonFilePath: path to json file which contains available products and their id, quantity, price and family
         """
-        raise NotImplementedError("add_products is abstract function and you should implement it")
+        raise NotImplementedError("_AddProducts is abstract function and you should implement it")
 
     def UpdateQuantity(self, iProductId):
         """
         remove 1 from product quantity after purchase
         @param iProductId: product id
         """
-        self._dProducts[iProductId].reduce_1_from_quantity()
+        self._dProducts[iProductId].Reduce1FromQuantity()

@@ -38,5 +38,5 @@ class Product:
     def sProductFamily(self):
         return self._sProductFamily
 
-    def reduce_1_from_quantity(self):
+    def Reduce1FromQuantity(self):
         self._iQuantity -= 1

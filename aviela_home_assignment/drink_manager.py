@@ -11,8 +11,8 @@ class DrinkManager(ProductManager):
     def __init__(self, sProductsJsonFilePath):
         super().__init__(sProductsJsonFilePath)
 
-    def _AddProducts(self, sProductsJsonFilePath):
-        with open(sProductsJsonFilePath) as fd:
+    def _AddProducts(self):
+        with open(self._sProductsJsonFilePath) as fd:
             lProducts = json.load(fd)
             for Product in lProducts:
                 if Product["_sProductFamily"] == Consts.DRINKS:

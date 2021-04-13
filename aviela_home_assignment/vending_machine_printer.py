@@ -6,9 +6,6 @@ class VendingMachinePrinter:
     VendingMachinePrinter class which responsible to print VM messages
     """
 
-    def __init__(self):
-        pass
-
     def InvalidCoin(self):
         print("\n*********************************************************************")
         print("********* You inserted invalid coin. please insert again ! **********")
@@ -46,4 +43,3 @@ class VendingMachinePrinter:
 
     def ChangeMoney(self, iChangeMoney):
         print(f"Change money is {iChangeMoney} " + Consts.CURRENCY_TYPE + ".")
-
