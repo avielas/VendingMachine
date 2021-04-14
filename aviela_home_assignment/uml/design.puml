@@ -2,20 +2,16 @@
 'https://plantuml.com/class-diagram
 
 class VendingMachine{
-    -__SweetManager
-    -__DrinkManager
+    -__ProductManager
     -__MoneyManager
+    -__DataReader
     -__VendingMachinePrinter
-    -__sProductsType : String
-    -__init__(sm, dm, mm, vmp)
+    -__sChosenProductsType : String
+    -__init__(pm, mm, vmp)
     +void StartVendingMachine()
     +void __CollectCoinsFromUser()
     +Product __GetProductSelectionFromUser()
     +void __HandlePurchase(Product)
-    +void DumpProducts(sProductJsonFilePath, sDrinkJsonFilePath, sSweetJsonFilePath)
-    +dProducts __GetProductsByType(sProductsType)
-    +void __RemoveProduct(Product)
-    +void __UpdateQuantity(Product)
     +bool __VmHaveEnoughChange(Product)
 }
 
@@ -24,13 +20,14 @@ class VendingMachinePrinter{
     +void NotEnoughMoney(iPrice, iCustomerMoney)
     +void NotEnoughChange()
     +void InvalidProductUId()
-    +void InitialMessage(sProductsType, AvailableDrinks, AvailableSweets, iCustomerMoney)
+    +void InitialMessage(sProductsType, iCustomerMoney)
     +void ProductPayment(sProductName)
     +void ChangeMoney(iChangeMoney)
-    +void CreatePrintListFromDict(dProducts)
+    +void __Dict2PrintList(dProducts)
 }
 
 class MoneyManager{
+    -__dMoney : Dictionary
     -_iVmChangeMoney : Integer
     -_iCustomerMoney : Integer
     -_iCustomerChangeMoney : Integer
@@ -44,14 +41,10 @@ class MoneyManager{
     +bool HaveEnoughChange()
 }
 
-class DrinkManager{
-    -__init__(sProductsJsonFilePath)
-    +void _AddProducts()
-}
-
-class SweetManager{
-    -__init__(sProductsJsonFilePath)
-    +void _AddProducts()
+class DataReader{
+    +dProducts ReadDataFromFile(sProductsJsonFilePath)
+    +dMoney ReadMoneyDataFromFile(sMoneyJsonFilePath)
+    +filteredProducts FilterData(self, Products, sProductType)
 }
 
 class Product{
@@ -65,13 +58,9 @@ class Product{
     +void Reduce1FromQuantity()
 }
 
-class Drink{
-    -__init__(iUid, sName, iPrice, iQuantity)
-}
+class Drink{}
 
-class Sweet{
-    -__init__(iUid, sName, iPrice, iQuantity)
-}
+class Sweet{}
 
 class Consts{
     CURRENCY_TYPE : String
@@ -81,35 +70,31 @@ class Consts{
     PRODUCT_DATA_JSON_FILE : String
     MONEY_DATA_JSON_FILE : String
     PRODUCT_DATA_DUMP_JSON_FILE : String
-    DRINK_DATA_DUMP_JSON_FILE : String
-    SWEET_DATA_DUMP_JSON_FILE : String
     MONEY_DATA_DUMP_JSON_FILE : String
-    DRINKS : String
-    SWEETS : String
+    DRINK : String
+    SWEET : String
     ALL : String
+
+    another few consts which used for Serialization
 }
 
 abstract class ProductManager{
     - _dProducts : Dict
     -__init__(sProductsJsonFilePath)
     -Just Getters - init from JSON
-    +void {abstract} _AddProducts()
     +lAvailableProducts GetAvailableProducts()
-    +void _AddProduct(iUid, Product)
     +void RemoveProduct(iUid)
     +void DumpProducts(sJsonFilePath)
     +void UpdateQuantity(iProductId)
 }
 
-ProductManager <|-- DrinkManager
-ProductManager <|-- SweetManager
 Product <|-- Drink
 Product <|-- Sweet
-VendingMachine "1" *-- "1" DrinkManager : have >
-VendingMachine "1" *-- "1" SweetManager : have >
+VendingMachine "1" *-- "1" ProductManager : have >
 VendingMachine "1" *-- "1" MoneyManager : have >
 VendingMachine "1" *-- "1" VendingMachinePrinter : have >
-DrinkManager "1" *-- "many" Drink :have >
-SweetManager "1" *-- "many" Sweet :have >
+VendingMachine "1" *-- "1" DataReader : have >
+ProductManager "1" *-- "1" DataReader : have >
+ProductManager "1" *-- "many" Product : have >
 
 @enduml

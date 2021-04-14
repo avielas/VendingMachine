@@ -9,7 +9,7 @@ def test_read_data_from_file():
     DirPath = os.path.dirname(os.path.dirname(__file__)) + "\\"
     DR = DataReader()
     sProductsJsonFilePath = DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE
-    dProducts = DR.ReadDataFromFile(sProductsJsonFilePath)
+    dProducts = DR.ReadProductsDataFromFile(sProductsJsonFilePath)
     ProductDataLen = len(dProducts)
     assert ProductDataLen == 7
 

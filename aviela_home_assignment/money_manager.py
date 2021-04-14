@@ -1,4 +1,6 @@
+from aviela_home_assignment.data_reader import DataReader
 import json
+from aviela_home_assignment.consts import Consts
 
 
 class MoneyManager:
@@ -12,12 +14,11 @@ class MoneyManager:
         @param iCustomerMoney: current costumer money value
         @param iCustomerChangeMoney: current costumer change money value
         """
-        # Read MoneyData.json
-        with open(sMoneyJsonPath) as IOFile:
-            lMoney = json.load(IOFile)
-        self._iVmChangeMoney = lMoney[0]["_iVmChangeMoney"]
-        self._iCustomerMoney = lMoney[0]["_iCustomerMoney"]
-        self._iCustomerChangeMoney = lMoney[0]["_iCustomerChangeMoney"]
+        self.__dMoney = DataReader().ReadMoneyDataFromFile(sMoneyJsonPath)
+
+        self._iVmChangeMoney = self.__dMoney[Consts.iVmChangeMoney]
+        self._iCustomerMoney = self.__dMoney[Consts.iCustomerMoney]
+        self._iCustomerChangeMoney = self.__dMoney[Consts.iCustomerChangeMoney]
 
     @property
     def iVmChangeMoney(self):
@@ -32,7 +33,11 @@ class MoneyManager:
         return self._iCustomerChangeMoney
 
     def DumpMoney(self, sJsonFilePath):
-        sMoneyJsonToDump = json.dumps([self.__dict__])
+        dMoney = dict([])
+        dMoney[Consts.iVmChangeMoney] = self._iVmChangeMoney
+        dMoney[Consts.iCustomerMoney] = self._iCustomerMoney
+        dMoney[Consts.iCustomerChangeMoney] = self._iCustomerChangeMoney
+        sMoneyJsonToDump = json.dumps([dMoney])
         # Open the file for storing money data when the drink has been paid (we can overwrite MoneyData.json, but keep it separately to make it clear)
         with open(sJsonFilePath, "w") as IOFile:
             IOFile.write(sMoneyJsonToDump)

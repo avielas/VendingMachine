@@ -14,3 +14,16 @@ class Consts:
     DRINK = "Drink"
     SWEET = "Sweet"
     ALL = "All"
+
+    '''
+    The following consts used for Serialization so I wrote them on camel case 
+    '''
+    iVmChangeMoney = "_iVmChangeMoney"
+    iCustomerMoney = "_iCustomerMoney"
+    iCustomerChangeMoney = "_iCustomerChangeMoney"
+
+    iUid = "_iUid"
+    sName = "_sName"
+    iPrice = "_iPrice"
+    iQuantity = "_iQuantity"
+    sProductFamily = "_sProductFamily"

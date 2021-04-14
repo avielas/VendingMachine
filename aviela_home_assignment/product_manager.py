@@ -13,7 +13,7 @@ class ProductManager:
         self._dProducts = dict([])
         # self._sProductsJsonFilePath = sProductsJsonFilePath
         self.__dataReader = DataReader()
-        self._dProducts = self.__dataReader.ReadDataFromFile(sProductsJsonFilePath)
+        self._dProducts = self.__dataReader.ReadProductsDataFromFile(sProductsJsonFilePath)
 
     def GetAvailableProducts(self):
         """
@@ -28,9 +28,6 @@ class ProductManager:
     @property
     def dProducts(self):
         return self._dProducts
-
-    def _AddProduct(self, iUid, Product):
-        self._dProducts[iUid] = Product
 
     def RemoveProduct(self, pProduct):
         if pProduct in self._dProducts.values():
