@@ -23,8 +23,6 @@ class ProductManager:
         for Product in self.dProducts.values():
             if Product.iQuantity > 0:
                 dAvailableProducts[Product.iUid] = Product
-                # sAvailableProductWithPrice = "{} {} {} {} {} {}".format(pProduct.iUid, ":", pProduct.sName, "price", pProduct.iPrice, Consts.CURRENCY_TYPE)
-                # lAvailableProducts.append(sAvailableProductWithPrice)
         return dAvailableProducts
 
     @property

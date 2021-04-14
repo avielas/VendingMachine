@@ -8,8 +8,6 @@ class DrinkManager(ProductManager):
     """
     DrinkManager class which implement ProductManager interface
     """
-    def __init__(self, sProductsJsonFilePath):
-        super().__init__(sProductsJsonFilePath)
 
     def _AddProducts(self):
         with open(self._sProductsJsonFilePath) as fd:
