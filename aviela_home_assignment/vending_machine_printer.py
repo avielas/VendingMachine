@@ -27,14 +27,16 @@ class VendingMachinePrinter:
         print("************************************** invalid product id. please try again! ***********************************")
         print("**************************************************************************************************************\n")
 
-    def InitialMessage(self, sProductsType, AvailableDrinks, AvailableSweets, iCustomerMoney):
+    def InitialMessage(self, Products, iCustomerMoney):
         print("\nYou can choose one of the following products:")
-        if sProductsType == Consts.ALL:
-            print(AvailableDrinks + AvailableSweets)
-        elif sProductsType == Consts.SWEETS:
-            print(AvailableSweets)
-        elif sProductsType == Consts.DRINKS:
-            print(AvailableDrinks)
+        # if sProductsType == Consts.ALL:
+        #     print(AvailableDrinks + AvailableSweets)
+        # elif sProductsType == Consts.SWEET:
+        #     print(AvailableSweets)
+        # elif sProductsType == Consts.DRINK:
+        #     print(AvailableDrinks)
+        lProducts = self.__Dict2PrintList(Products)
+        print(lProducts)
         print(f"For now, your deposit money is {iCustomerMoney} " + str(Consts.CURRENCY_TYPE) + ".")
         print(f"For see just sweets press 's', for drinks 'd' and for all 'a'.")
 
@@ -44,7 +46,7 @@ class VendingMachinePrinter:
     def ChangeMoney(self, iChangeMoney):
         print(f"Change money is {iChangeMoney} " + Consts.CURRENCY_TYPE + ".")
 
-    def CreatePrintListFromDict(self, dProducts):
+    def __Dict2PrintList(self, dProducts):
         lAvailableProducts = []
         for Product in dProducts.values():
             if Product.iQuantity > 0:

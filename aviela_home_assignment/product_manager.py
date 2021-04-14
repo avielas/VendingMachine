@@ -1,6 +1,5 @@
-from aviela_home_assignment.consts import Consts
+from aviela_home_assignment.data_reader import DataReader
 import json
-from abc import abstractmethod
 
 
 class ProductManager:
@@ -12,8 +11,9 @@ class ProductManager:
         @param sProductsJsonFilePath: path to json file which contains available products and their id, quantity, price and family
         """
         self._dProducts = dict([])
-        self._sProductsJsonFilePath = sProductsJsonFilePath
-        self._AddProducts()
+        # self._sProductsJsonFilePath = sProductsJsonFilePath
+        self.__dataReader = DataReader()
+        self._dProducts = self.__dataReader.ReadDataFromFile(sProductsJsonFilePath)
 
     def GetAvailableProducts(self):
         """
@@ -32,9 +32,9 @@ class ProductManager:
     def _AddProduct(self, iUid, Product):
         self._dProducts[iUid] = Product
 
-    def RemoveProduct(self, iUid):
-        if iUid in self._dProducts:
-            del self._dProducts[iUid]
+    def RemoveProduct(self, pProduct):
+        if pProduct in self._dProducts.values():
+            del self._dProducts[pProduct.iUid]
         else:
             raise KeyError("dictionary doesn't contain key")
 
@@ -49,13 +49,6 @@ class ProductManager:
         # save the up-to-date product quantity to file
         with open(sJsonFilePath, "w") as IOFile:
             IOFile.write(pProductJsonToDump)
-
-    @abstractmethod
-    def _AddProducts(self):
-        """
-        This function take the id, name, price and quantity data to create product obj by storing it in the pProducts dictionary
-        """
-        raise NotImplementedError("_AddProducts is abstract function and you should implement it")
 
     def UpdateQuantity(self, iProductId):
         """

@@ -1,5 +1,4 @@
 import json
-from aviela_home_assignment.consts import Consts
 
 
 class MoneyManager:
