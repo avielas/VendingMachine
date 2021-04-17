@@ -28,13 +28,18 @@ class DataReader:
         Read money data from MoneyData.json
         @param sMoneyJsonFilePath: path to json file which contains available products and their id, quantity, price and family
         """
-        dMoney = dict([])
         with open(sMoneyJsonFilePath) as IOFile:
-            lMoney = json.load(IOFile)
-        dMoney[Consts.iVmChangeMoney] = lMoney[0][Consts.iVmChangeMoney]
-        dMoney[Consts.iCustomerMoney] = lMoney[0][Consts.iCustomerMoney]
-        dMoney[Consts.iCustomerChangeMoney] = lMoney[0][Consts.iCustomerChangeMoney]
+            dMoney = json.load(IOFile)
         return dMoney
+
+    def ReadCoinsDataFromFile(self, sCoinsJsonFilePath):
+        """
+        Read coins data from CoinsData.json
+        @param sCoinsJsonFilePath: path to json file which contains coins and their quantity
+        """
+        with open(sCoinsJsonFilePath) as IOFile:
+            dCoins = json.load(IOFile)
+        return dCoins
 
     def FilterData(self, Products, sProductType):
         if sProductType == Consts.ALL:

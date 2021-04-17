@@ -1,8 +1,7 @@
 """Tests the VendingMachineManager class."""
 from aviela_home_assignment.product_manager import ProductManager
 from aviela_home_assignment.money_manager import MoneyManager
-from aviela_home_assignment.vending_machine import VendingMachine
-from aviela_home_assignment.vending_machine_printer import VendingMachinePrinter
+from aviela_home_assignment.calculator import Calculator
 from aviela_home_assignment.consts import Consts
 import random
 import os
@@ -42,22 +41,35 @@ def test_start_vending_machine_4():
 
 def start_vending_machine(CustomerCoins):
     DirPath = os.path.dirname(os.path.dirname(__file__)) + "\\"
-    MM = MoneyManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_JSON_FILE)
+    MM = MoneyManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_JSON_FILE,
+                      DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.COINS_DATA_JSON_FILE)
     PM = ProductManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
-    VMP = VendingMachinePrinter()
-    VM = VendingMachine(PM, MM, VMP)
 
     # __CollectCoinsFromUser
     for Coin in CustomerCoins:
-        MM.AddToCustomerMoney(Coin)
+        MM.AddToCustomerCoins(str(Coin))
 
     # random __GetProductSelectionFromUser
     Product = get_product_selection_from_user(PM)
     SaveCustomerMoney = MM.iCustomerMoney
     SaveChangeMoney = MM.iVmChangeMoney
 
-    if not MM.CustomerHaveEnoughMoney(Product):
+    if not MM.CustomerHaveEnoughMoney(Product.iPrice):
         assert MM.iCustomerMoney < Product.iPrice
+
+    # test also VmHaveEnoughChange function
+    if not MM.VmHaveEnoughChange(Product.iPrice):
+        calc = Calculator()
+        # merge 2 dictionaries
+        dTotalCoins = MM.dCostumerCoins.copy()
+
+        for k, v in MM.dVmCoins.items():
+            dTotalCoins[k] += v
+
+        iChange = MM.iCustomerMoney - Product.iPrice
+        ChangeCoins = calc.CalculateMinimum(dTotalCoins.copy(), iChange)
+        assert ChangeCoins is None
+        return True
 
     # __HandlePurchase
     handle_purchase(DirPath, MM, PM, Product)
@@ -67,16 +79,15 @@ def start_vending_machine(CustomerCoins):
 
 
 def handle_purchase(DirPath, MM, PM, Product):
-    MM.AddToCustomerChangeMoney(Product.iPrice)
-    MM.AddToVmChangeMoney(Product.iPrice)
     PM.UpdateQuantity(Product.iUid)
+    if Product.iQuantity == 0:
+        PM.RemoveProduct(Product)
     sProductJsonFilePath = DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_DUMP_JSON_FILE
     PM.DumpProducts(sProductJsonFilePath)
     # save the new amount into file
     mMoneyDumpJsonFilePath = DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_DUMP_JSON_FILE
-    MM.DumpMoney(mMoneyDumpJsonFilePath)
-
-    assert MM.iCustomerChangeMoney == MM.iCustomerMoney - Product.iPrice
+    mCoinsDumpJsonFilePath = DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.COINS_DATA_DUMP_JSON_FILE
+    MM.DumpMoney(mMoneyDumpJsonFilePath, mCoinsDumpJsonFilePath)
 
 
 def get_product_selection_from_user(PM):

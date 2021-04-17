@@ -2,6 +2,7 @@ from aviela_home_assignment.consts import Consts
 from aviela_home_assignment.data_reader import DataReader
 
 
+
 class VendingMachine:
     """
     VendingMachine class which run the main flow
@@ -18,7 +19,8 @@ class VendingMachine:
         while True:
             self.__CollectCoinsFromUser()
             Product = self.__GetProductSelectionFromUser()
-            if not self.__VmHaveEnoughChange(Product):
+            if not self.__MoneyManager.VmHaveEnoughChange(Product.iPrice):
+                self.__VendingMachinePrinter.NotEnoughChange()
                 continue
             else:
                 break
@@ -31,11 +33,11 @@ class VendingMachine:
             FilteredProducts = self.__DataReader.FilterData(AvailableProducts, self.__sChosenProductsType)
             self.__VendingMachinePrinter.InitialMessage(FilteredProducts, self.__MoneyManager.iCustomerMoney)
             # Get input from customer
-            sCoins = ', '.join(Consts.COINS_LIST)
+            sCoins = ', '.join(self.__MoneyManager.dVmCoins)
             sUserInput = str(input("Please insert coin " + sCoins + " " + str(Consts.CURRENCY_TYPE) + ". To place order, press 0: "))
             # If you drop valid coin, add the money that has been added continuously with customer_money
-            if sUserInput in Consts.COINS_LIST:
-                self.__MoneyManager.AddToCustomerMoney(int(sUserInput))
+            if sUserInput in self.__MoneyManager.dVmCoins:
+                self.__MoneyManager.AddToCustomerCoins(sUserInput)
             elif sUserInput == 'a':
                 self.__sChosenProductsType = Consts.ALL
             elif sUserInput == 'd':
@@ -69,7 +71,7 @@ class VendingMachine:
                     FilteredProducts = self.__DataReader.FilterData(AvailableProducts, self.__sChosenProductsType)
                     if iProductId in FilteredProducts:
                         Product = FilteredProducts[iProductId]
-                        if not self.__MoneyManager.CustomerHaveEnoughMoney(Product):
+                        if not self.__MoneyManager.CustomerHaveEnoughMoney(Product.iPrice):
                             self.__VendingMachinePrinter.NotEnoughMoney(Product.iPrice, self.__MoneyManager.iCustomerMoney)
                             continue
                         return Product
@@ -84,22 +86,12 @@ class VendingMachine:
         self.__ProductManager.UpdateQuantity(Product.iUid)
         if Product.iQuantity == 0:
             self.__ProductManager.RemoveProduct(Product)
-        # reset customer money to zero
-        self.__MoneyManager.AddToCustomerMoney(-1 * self.__MoneyManager.iCustomerMoney)
         sProductJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.PRODUCT_DATA_DUMP_JSON_FILE
         self.__ProductManager.DumpProducts(sProductJsonFilePath)
         # save the new amount into file
-        sMoneyDumpJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.MONEY_DATA_DUMP_JSON_FILE
-        self.__MoneyManager.DumpMoney(sMoneyDumpJsonFilePath)
-        self.__VendingMachinePrinter.ChangeMoney(self.__MoneyManager.iCustomerChangeMoney)
-        self.__VendingMachinePrinter.ProductPayment(Product.sName)
+        mMoneyDumpJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.MONEY_DATA_DUMP_JSON_FILE
+        mCoinsDumpJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.COINS_DATA_DUMP_JSON_FILE
+        self.__MoneyManager.DumpMoney(mMoneyDumpJsonFilePath, mCoinsDumpJsonFilePath)
 
-    def __VmHaveEnoughChange(self, Product):
-        self.__MoneyManager.AddToCustomerChangeMoney(Product.iPrice)
-        self.__MoneyManager.AddToVmChangeMoney(Product.iPrice)
-        if not self.__MoneyManager.HaveEnoughChange():
-            self.__VendingMachinePrinter.NotEnoughChange()
-            self.__MoneyManager.AddToCustomerChangeMoney(-1 * Product.iPrice)
-            self.__MoneyManager.AddToVmChangeMoney(-1 * Product.iPrice)
-            return False
-        return True
+        self.__VendingMachinePrinter.ChangeMoney(self.__MoneyManager.iCustomerChangeMoney, self.__MoneyManager.dCostumerChangeCoins)
+        self.__VendingMachinePrinter.ProductPayment(Product.sName)

@@ -47,7 +47,7 @@ class ProductManager:
         with open(sJsonFilePath, "w") as IOFile:
             IOFile.write(pProductJsonToDump)
 
-    def UpdateQuantity(self, iProductId):
+    def UpdateQuantity(self, iProductId: int):
         """
         remove 1 from product quantity after purchase
         @param iProductId: product id
