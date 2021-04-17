@@ -68,9 +68,13 @@ class Product{
     +void Reduce1FromQuantity()
 }
 
-class Drink{}
+class Drink{
+    -bSparkling : Boolean
+}
 
-class Snack{}
+class Snack{
+    -bSweet : Boolean
+}
 
 class Consts{
     CURRENCY_TYPE

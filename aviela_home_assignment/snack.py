@@ -14,5 +14,5 @@ class Snack(Product):
         self._bSweet = bSweet
 
     @property
-    def bSweet(self):
+    def bSweet(self) -> bool:
         return self._bSweet

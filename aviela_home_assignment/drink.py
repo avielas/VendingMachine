@@ -14,5 +14,5 @@ class Drink(Product):
         self._bSparkling = bSparkling
 
     @property
-    def bSparkling(self):
+    def bSparkling(self) -> bool:
         return self._bSparkling
