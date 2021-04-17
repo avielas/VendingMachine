@@ -16,10 +16,10 @@ class MoneyManager:
         @param iCustomerMoney: current costumer money value
         @param iCustomerChangeMoney: current costumer change money value
         """
-        self.__calculator = Calculator()
-        self.__dataReader = DataReader()
-        self.__dMoney = self.__dataReader.ReadMoneyDataFromFile(sMoneyJsonPath)
-        self._dVmCoins = self.__dataReader.ReadCoinsDataFromFile(sCoinsJsonPath)
+        self.__Calculator = Calculator()
+        self.__DataReader = DataReader()
+        self.__dMoney = self.__DataReader.ReadMoneyDataFromFile(sMoneyJsonPath)
+        self.__dVmCoins = self.__DataReader.ReadCoinsDataFromFile(sCoinsJsonPath)
         self.__initDCostumerCoins()
         self._dCostumerChangeCoins = dict([])
 
@@ -29,7 +29,7 @@ class MoneyManager:
 
     @property
     def dVmCoins(self):
-        return self._dVmCoins
+        return self.__dVmCoins
 
     @property
     def dCostumerCoins(self):
@@ -41,7 +41,7 @@ class MoneyManager:
 
     @property
     def iVmChangeMoney(self):
-        return self.__sumCoinsDict(self._dVmCoins)
+        return self.__sumCoinsDict(self.__dVmCoins)
         # return self._iVmChangeMoney
 
     @property
@@ -73,32 +73,32 @@ class MoneyManager:
             raise KeyError("Can't add the coin because Vending Machine doesn't support it")
             pass
 
-    def CustomerHaveEnoughMoney(self, ProductPrice: int):
+    def CustomerHaveEnoughMoney(self, ProductPrice):
         return self.iCustomerMoney >= ProductPrice
 
     # def AddToCustomerChangeMoney(self, iProductPrice):
     #     self._iCustomerChangeMoney = self.iCustomerMoney - iProductPrice
 
-    def VmHaveEnoughChange(self, ProductPrice):
+    def VmHaveEnoughChange(self, ProductPrice: int):
         # return self.iCustomerChangeMoney < self._iVmChangeMoney
 
         # merge 2 dictionaries
         dTotalCoins = self._dCostumerCoins.copy()
-        for k, v in self._dVmCoins.items():
+        for k, v in self.__dVmCoins.items():
             dTotalCoins[k] += v
 
         iChange = self.iCustomerMoney - ProductPrice
-        ChangeCoins = self.__calculator.CalculateMinimum(dTotalCoins.copy(), iChange)
+        ChangeCoins = self.__Calculator.CalculateMinimum(dTotalCoins.copy(), iChange)
         if ChangeCoins is None:
             return False
         else:
             self._dCostumerChangeCoins = ChangeCoins
-            self._dVmCoins = dTotalCoins
+            self.__dVmCoins = dTotalCoins
             self._dCostumerCoins = dict([])
 
             # update dVmCoins
             for k, v in ChangeCoins.items():
-                self._dVmCoins[k] -= v
+                self.__dVmCoins[k] -= v
 
             return True
 

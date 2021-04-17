@@ -82,10 +82,10 @@ class VendingMachine:
                     self.__VendingMachinePrinter.InvalidProductUId()
                     continue
 
-    def __HandlePurchase(self, Product):
-        self.__ProductManager.UpdateQuantity(Product.iUid)
-        if Product.iQuantity == 0:
-            self.__ProductManager.RemoveProduct(Product)
+    def __HandlePurchase(self, product):
+        self.__ProductManager.UpdateQuantity(product.iUid)
+        if product.iQuantity == 0:
+            self.__ProductManager.RemoveProduct(product)
         sProductJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.PRODUCT_DATA_DUMP_JSON_FILE
         self.__ProductManager.DumpProducts(sProductJsonFilePath)
         # save the new amount into file
@@ -94,4 +94,4 @@ class VendingMachine:
         self.__MoneyManager.DumpMoney(mMoneyDumpJsonFilePath, mCoinsDumpJsonFilePath)
 
         self.__VendingMachinePrinter.ChangeMoney(self.__MoneyManager.iCustomerChangeMoney, self.__MoneyManager.dCostumerChangeCoins)
-        self.__VendingMachinePrinter.ProductPayment(Product.sName)
+        self.__VendingMachinePrinter.ProductPayment(product.sName)

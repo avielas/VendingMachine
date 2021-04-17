@@ -11,8 +11,7 @@ class VendingMachine{
     +void StartVendingMachine()
     +void __CollectCoinsFromUser()
     +Product __GetProductSelectionFromUser()
-    +void __HandlePurchase(Product)
-    +bool __VmHaveEnoughChange(Product)
+    +void __HandlePurchase(product)
 }
 
 class VendingMachinePrinter{
@@ -27,23 +26,33 @@ class VendingMachinePrinter{
 }
 
 class MoneyManager{
-    -__dMoney : Dictionary
+    -__Calculator
+    -__DataReader
+    -dVmCoins : Dictionary
+    -dCostumerCoins : Dictionary
+    -dCostumerChangeCoins : Dictionary
     -_iVmChangeMoney : Integer
     -_iCustomerMoney : Integer
     -_iCustomerChangeMoney : Integer
     -Just Getters - init from JSON
-    -__init__(sMoneyJsonPath)
-    +void DumpMoney(sJsonFilePath)
-    +AddToCustomerMoney(x)
-    +AddToVmChangeMoney(x)
-    +bool CustomerHaveEnoughMoney(Product)
-    +AddToCustomerChangeMoney(iProductPrice)
-    +bool HaveEnoughChange()
+    -__init__(sMoneyJsonPath: str)
+    +void DumpMoney(sJsonMoneyFilePath, sJsonCoinsFilePath)
+    +AddToCustomerCoins(coin)
+    +bool CustomerHaveEnoughMoney(ProductPrice)
+    +bool VmHaveEnoughChange(ProductPrice)
+    +int __sumCoinsDict(dDict)
+    +__initDCostumerCoins()
+}
+
+class Calculator{
+    +minimalMatch CalculateMinimum(coins, change)
+    +matches __CalculateFinite(coins, change, start)
 }
 
 class DataReader{
-    +dProducts ReadDataFromFile(sProductsJsonFilePath)
+    +dProducts ReadProductsDataFromFile(sProductsJsonFilePath)
     +dMoney ReadMoneyDataFromFile(sMoneyJsonFilePath)
+    +dMoney ReadCoinsDataFromFile(sCoinsJsonFilePath)
     +filteredProducts FilterData(self, Products, sProductType)
 }
 
@@ -63,17 +72,18 @@ class Drink{}
 class Sweet{}
 
 class Consts{
-    CURRENCY_TYPE : String
-    COINS_LIST : List
-    JSON_DIR_PATH_TESTS : String
-    JSON_DIR_PATH_PROGRAM : String
-    PRODUCT_DATA_JSON_FILE : String
-    MONEY_DATA_JSON_FILE : String
-    PRODUCT_DATA_DUMP_JSON_FILE : String
-    MONEY_DATA_DUMP_JSON_FILE : String
-    DRINK : String
-    SWEET : String
-    ALL : String
+    CURRENCY_TYPE
+    JSON_DIR_PATH_TESTS
+    JSON_DIR_PATH_PROGRAM
+    PRODUCT_DATA_JSON_FILE
+    MONEY_DATA_JSON_FILE
+    COINS_DATA_JSON_FILE
+    PRODUCT_DATA_DUMP_JSON_FILE
+    MONEY_DATA_DUMP_JSON_FILE
+    COINS_DATA_DUMP_JSON_FILE
+    DRINK
+    SWEET
+    ALL
 
     another few consts which used for Serialization
 }
@@ -95,6 +105,7 @@ VendingMachine "1" *-- "1" MoneyManager : have >
 VendingMachine "1" *-- "1" VendingMachinePrinter : have >
 VendingMachine "1" *-- "1" DataReader : have >
 ProductManager "1" *-- "1" DataReader : have >
+MoneyManager "1" *-- "1" Calculator : have >
 ProductManager "1" *-- "many" Product : have >
 
 @enduml
