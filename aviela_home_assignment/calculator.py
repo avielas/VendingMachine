@@ -1,7 +1,10 @@
 
 
 class Calculator:
-    def CalculateMinimum(self, coins, change):
+    """
+    Calculator class for handle calculation
+    """
+    def CalculateMinimum(self, coins: dict, change: int) -> dict:
         """
         Calculate the minimum number of coins to produce the amount of change required
         @param coins: Dictionary of coins [(val,quantity), ...]
@@ -27,7 +30,7 @@ class Calculator:
 
         return minimalMatch
 
-    def __CalculateFinite(self, coins, change, start):
+    def __CalculateFinite(self, coins: dict, change: int, start: int) -> dict:
         """
         The function calculate the number of coins which should be returned to user (which may not be the MINIMUM).
         This function implement algorithm which run on coins (from bigger to smaller. it assumes the dictionary is sorted) and try to find

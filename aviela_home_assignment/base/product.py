@@ -39,4 +39,7 @@ class Product:
         return self._sProductFamily
 
     def Reduce1FromQuantity(self):
+        """
+        Reduce 1 from Product's quantity
+        """
         self._iQuantity -= 1

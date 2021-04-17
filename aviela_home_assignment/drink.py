@@ -4,7 +4,7 @@ from aviela_home_assignment.consts import Consts
 
 class Drink(Product):
     """
-    Drink class which use from base Product
+    Drink class which is a Product
     """
     # def __init__(self, iUid, sName, iPrice, iQuantity):
     #     """

@@ -1,7 +1,7 @@
 
 class Consts:
     """
-    Consts class which contains global consts variables
+    Contains global consts variables
     """
     CURRENCY_TYPE = "dollar"
     JSON_DIR_PATH_TESTS = "aviela_home_assignment\\json"

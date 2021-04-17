@@ -61,7 +61,14 @@ def start_vending_machine(CustomerCoins):
     if not MM.VmHaveEnoughChange(Product.iPrice):
         calc = Calculator()
         # merge 2 dictionaries
-        dTotalCoins = MM.dCostumerCoins.copy()
+        dCostumerCoins = dict([])
+        for k, v in MM.dVmCoins.items():
+            dCostumerCoins[k] = 0
+
+        for coin in CustomerCoins:
+            dCostumerCoins[str(coin)] = dCostumerCoins[str(coin)] + 1
+
+        dTotalCoins = dCostumerCoins
 
         for k, v in MM.dVmCoins.items():
             dTotalCoins[k] += v
@@ -81,7 +88,7 @@ def start_vending_machine(CustomerCoins):
 def handle_purchase(DirPath, MM, PM, Product):
     PM.UpdateQuantity(Product.iUid)
     if Product.iQuantity == 0:
-        PM.RemoveProduct(Product)
+        PM.RemoveProduct(Product.iUid)
     sProductJsonFilePath = DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_DUMP_JSON_FILE
     PM.DumpProducts(sProductJsonFilePath)
     # save the new amount into file

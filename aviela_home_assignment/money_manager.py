@@ -6,15 +6,14 @@ from aviela_home_assignment.calculator import Calculator
 
 class MoneyManager:
     """
-    MoneyManager class for handle the money calculation and record
+    MoneyManager class for handle coins, money and dumping
     """
-    def __init__(self, sMoneyJsonPath, sCoinsJsonPath):
+    def __init__(self, sMoneyJsonPath: str, sCoinsJsonPath: str):
         """
         @param sCoinsJsonPath: JSON path to initialize variable dVmCoins
+        @type sCoinsJsonPath: String
         @param sMoneyJsonPath: JSON path to initialize variables iChangeMoney, iCustomerMoney values
-        @param iVmChangeMoney: current change money value of the vending machine
-        @param iCustomerMoney: current costumer money value
-        @param iCustomerChangeMoney: current costumer change money value
+        @type sMoneyJsonPath: String
         """
         self.__Calculator = Calculator()
         self.__DataReader = DataReader()
@@ -28,31 +27,59 @@ class MoneyManager:
         # self._iCustomerChangeMoney = self.__dMoney[Consts.iCustomerChangeMoney]
 
     @property
-    def dVmCoins(self):
+    def dVmCoins(self) -> dict:
+        """
+        Dictionary of VM's coins which loaded from JSON and update each time user buy product
+        @return: Dictionary of coins
+        @rtype: Dictionary
+        """
         return self.__dVmCoins
 
     @property
-    def dCostumerCoins(self):
-        return self._dCostumerCoins
-
-    @property
-    def dCostumerChangeCoins(self):
+    def dCostumerChangeCoins(self) -> dict:
+        """
+        Dictionary of customer's coins which update each time user buy product and reset after VM finished to run
+        @return: Dictionary of coins
+        @rtype: Dictionary
+        """
         return self._dCostumerChangeCoins
 
     @property
-    def iVmChangeMoney(self):
+    def iVmChangeMoney(self) -> int:
+        """
+        Current change money value of the vending machine
+        @return: current VM change money value
+        @rtype: Integer
+        """
         return self.__sumCoinsDict(self.__dVmCoins)
         # return self._iVmChangeMoney
 
     @property
-    def iCustomerMoney(self):
+    def iCustomerMoney(self) -> int:
+        """
+        Current costumer money value
+        @return: costumer money value
+        @rtype: Integer
+        """
         return self.__sumCoinsDict(self._dCostumerCoins)
 
     @property
-    def iCustomerChangeMoney(self):
+    def iCustomerChangeMoney(self) -> int:
+        """
+        Current costumer change money value
+        @return: costumer money value
+        @rtype: Integer
+        """
         return self.__sumCoinsDict(self._dCostumerChangeCoins)
 
-    def DumpMoney(self, sJsonMoneyFilePath, sJsonCoinsFilePath):
+    def DumpMoney(self, sJsonMoneyFilePath: str, sJsonCoinsFilePath: str):
+        """
+        Stored values which created by json.dumps() to the files sJsonMoneyFilePath and sJsonCoinsFilePath. This critical for persistently purposes.
+        @param sJsonMoneyFilePath: Money json file path for dumping
+        @type sJsonMoneyFilePath: String
+        @param sJsonCoinsFilePath: Coins json file path for dumping
+        @type sJsonCoinsFilePath: String
+        """
         dMoney = dict([])
         dMoney[Consts.iVmChangeMoney] = self.iVmChangeMoney
         dMoney[Consts.iCustomerMoney] = self.iCustomerMoney
@@ -67,19 +94,39 @@ class MoneyManager:
             IOFile.write(sCoinsJsonToDump)
 
     def AddToCustomerCoins(self, coin: str):
+        """
+        Add coin to customer coins dictionary
+        @param coin: Valid coin (for valid coins see CoinsData.json)
+        @type coin: String
+        """
         if coin in self._dCostumerCoins:
             self._dCostumerCoins[coin] = self._dCostumerCoins[coin] + 1
         else:
             raise KeyError("Can't add the coin because Vending Machine doesn't support it")
             pass
 
-    def CustomerHaveEnoughMoney(self, ProductPrice):
+    def CustomerHaveEnoughMoney(self, ProductPrice: int) -> bool:
+        """
+        Validate if customer have enough money to buy product
+        @param ProductPrice: the price of the product
+        @type ProductPrice: Integer
+        @return: True if yes, else False
+        @rtype: Boolean
+        """
         return self.iCustomerMoney >= ProductPrice
 
     # def AddToCustomerChangeMoney(self, iProductPrice):
     #     self._iCustomerChangeMoney = self.iCustomerMoney - iProductPrice
 
-    def VmHaveEnoughChange(self, ProductPrice: int):
+    def VmHaveEnoughChange(self, ProductPrice: int) -> bool:
+        """
+        This function use CalculateMinimum to check if VM have enough change to return to user.
+        Read CalculateMinimum and __CalculateFinite documentation for more details
+        @param ProductPrice: the price of the product
+        @type ProductPrice: Integer
+        @return: True if yes, else False
+        @rtype: Boolean
+        """
         # return self.iCustomerChangeMoney < self._iVmChangeMoney
 
         # merge 2 dictionaries
@@ -102,13 +149,23 @@ class MoneyManager:
 
             return True
 
-    def __sumCoinsDict(self, dDict):
+    def __sumCoinsDict(self, dDict: dict) -> int:
+        """
+        Sum all values*keys on Dictionary (v1*k1 + v2*k2 + ... + vn*kn)
+        @param dDict: Dictionary of coins
+        @type dDict: Dictionary
+        @return: sum of keys
+        @rtype: Integer
+        """
         sm = 0
         for k, v in dDict.items():
             sm += int(k)*int(v)
         return sm
 
     def __initDCostumerCoins(self):
+        """
+        Init _dCostumerCoins variable from dVmCoins but insert 0 to all keys
+        """
         self._dCostumerCoins = dict([])
         for k, v in self.dVmCoins.items():
             self._dCostumerCoins[k] = 0

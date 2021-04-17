@@ -65,7 +65,7 @@ def test_remove_and_dump_product():
     PM.UpdateQuantity(Product.iUid)
     # save the up-to-date product quantity to file
     if Product.iQuantity == 0:
-        PM.RemoveProduct(Product)
+        PM.RemoveProduct(Product.iUid)
     sProductJsonFilePath = DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_DUMP_JSON_FILE
     PM.DumpProducts(sProductJsonFilePath)
 

@@ -4,7 +4,7 @@ from aviela_home_assignment.consts import Consts
 
 class Sweet(Product):
     """
-    Sweet class which use from base Product
+    Sweet class which is a Product
     """
     # def __init__(self, iUid, sName, iPrice, iQuantity):
     #     """

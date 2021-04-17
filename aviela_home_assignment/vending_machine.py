@@ -2,12 +2,19 @@ from aviela_home_assignment.consts import Consts
 from aviela_home_assignment.data_reader import DataReader
 
 
-
 class VendingMachine:
     """
     VendingMachine class which run the main flow
     """
     def __init__(self, pm, mm, vmp):
+        """
+        @param pm: Product's Manager
+        @type pm: ProductManager
+        @param mm: Money's Manager
+        @type mm: MoneyManager
+        @param vmp: Vending Machine's Printer
+        @type vmp: VendingMachinePrinter
+        """
         self.__ProductManager = pm
         self.__MoneyManager = mm
         self.__VendingMachinePrinter = vmp
@@ -15,6 +22,9 @@ class VendingMachine:
         self.__DataReader = DataReader()
 
     def StartVendingMachine(self):
+        """
+        Run the main flow of the Vending Machine
+        """
         # Open infinity loop which can stop by ctrl+c
         while True:
             self.__CollectCoinsFromUser()
@@ -27,6 +37,9 @@ class VendingMachine:
         self.__HandlePurchase(Product)
 
     def __CollectCoinsFromUser(self):
+        """
+        Collect coin from user and print error in case of invalid coin
+        """
         while True:
             print("\n --- Vending machine --- ")
             AvailableProducts = self.__ProductManager.GetAvailableProducts()
@@ -51,6 +64,11 @@ class VendingMachine:
                 self.__VendingMachinePrinter.InvalidCoin()
 
     def __GetProductSelectionFromUser(self):
+        """
+        Get the selected product from user and print error in case of invalid product ID
+        @return: Selected product by user
+        @rtype: Product
+        """
         while True:
             AvailableProducts = self.__ProductManager.GetAvailableProducts()
             FilteredProducts = self.__DataReader.FilterData(AvailableProducts, self.__sChosenProductsType)
@@ -83,9 +101,14 @@ class VendingMachine:
                     continue
 
     def __HandlePurchase(self, product):
+        """
+        Get the selected product and handle the purchase
+        @param product: Selected product by user
+        @type product: Product
+        """
         self.__ProductManager.UpdateQuantity(product.iUid)
         if product.iQuantity == 0:
-            self.__ProductManager.RemoveProduct(product)
+            self.__ProductManager.RemoveProduct(product.iUid)
         sProductJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.PRODUCT_DATA_DUMP_JSON_FILE
         self.__ProductManager.DumpProducts(sProductJsonFilePath)
         # save the new amount into file
