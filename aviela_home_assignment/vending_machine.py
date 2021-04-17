@@ -19,6 +19,7 @@ class VendingMachine:
         self.__MoneyManager = mm
         self.__VendingMachinePrinter = vmp
         self.__sChosenProductsType = Consts.ALL
+        self.__specificProductsType = False
         self.__DataReader = DataReader()
 
     def StartVendingMachine(self):
@@ -43,8 +44,8 @@ class VendingMachine:
         while True:
             self.__VendingMachinePrinter.WelcomeToVM()
             AvailableProducts = self.__ProductManager.GetAvailableProducts()
-            FilteredProducts = self.__DataReader.FilterData(AvailableProducts, self.__sChosenProductsType)
-            self.__VendingMachinePrinter.InitialMessage(FilteredProducts, self.__MoneyManager.iCustomerMoney)
+            FilteredProducts = self.__DataReader.FilterData(AvailableProducts, self.__sChosenProductsType, self.__specificProductsType)
+            self.__VendingMachinePrinter.InitialMessage(FilteredProducts, self.__MoneyManager.iCustomerMoney, self.__sChosenProductsType)
             # Get input from customer
             sCoins = ', '.join(self.__MoneyManager.dVmCoins)
             sUserInput = str(input("Please insert coin " + sCoins + " " + str(Consts.CURRENCY_TYPE) + ". To place order, press 0: "))
@@ -54,9 +55,17 @@ class VendingMachine:
             elif sUserInput == 'a':
                 self.__sChosenProductsType = Consts.ALL
             elif sUserInput == 'd':
+                self.__specificProductsType = False
                 self.__sChosenProductsType = Consts.DRINK
             elif sUserInput == 's':
-                self.__sChosenProductsType = Consts.SWEET
+                self.__specificProductsType = False
+                self.__sChosenProductsType = Consts.SNACK
+            elif sUserInput == 'sd':
+                self.__specificProductsType = True
+                self.__sChosenProductsType = Consts.DRINK
+            elif sUserInput == 'ss':
+                self.__specificProductsType = True
+                self.__sChosenProductsType = Consts.SNACK
             # If you click to select the product
             elif sUserInput == '0':
                 break
@@ -71,22 +80,30 @@ class VendingMachine:
         """
         while True:
             AvailableProducts = self.__ProductManager.GetAvailableProducts()
-            FilteredProducts = self.__DataReader.FilterData(AvailableProducts, self.__sChosenProductsType)
-            self.__VendingMachinePrinter.InitialMessage(FilteredProducts, self.__MoneyManager.iCustomerMoney)
+            FilteredProducts = self.__DataReader.FilterData(AvailableProducts, self.__sChosenProductsType, self.__specificProductsType)
+            self.__VendingMachinePrinter.InitialMessage(FilteredProducts, self.__MoneyManager.iCustomerMoney, self.__sChosenProductsType)
             print(f"If you want to insert more coins, press 'i'.")
             sUserInput = str(input("Please give the id of the product you want: "))
             if sUserInput == 'a':
                 self.__sChosenProductsType = Consts.ALL
             elif sUserInput == 'd':
+                self.__specificProductsType = False
                 self.__sChosenProductsType = Consts.DRINK
             elif sUserInput == 's':
-                self.__sChosenProductsType = Consts.SWEET
+                self.__specificProductsType = False
+                self.__sChosenProductsType = Consts.SNACK
+            elif sUserInput == 'sd':
+                self.__specificProductsType = True
+                self.__sChosenProductsType = Consts.DRINK
+            elif sUserInput == 'ss':
+                self.__specificProductsType = True
+                self.__sChosenProductsType = Consts.SNACK
             elif sUserInput == 'i':
                 self.__CollectCoinsFromUser()
             else:
                 try:
                     iProductId = int(sUserInput)
-                    FilteredProducts = self.__DataReader.FilterData(AvailableProducts, self.__sChosenProductsType)
+                    FilteredProducts = self.__DataReader.FilterData(AvailableProducts, self.__sChosenProductsType, self.__specificProductsType)
                     if iProductId in FilteredProducts:
                         Product = FilteredProducts[iProductId]
                         if not self.__MoneyManager.CustomerHaveEnoughMoney(Product.iPrice):

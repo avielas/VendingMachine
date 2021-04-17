@@ -13,7 +13,7 @@ class Consts:
     MONEY_DATA_DUMP_JSON_FILE = "\\MoneyDataDump.json"
     COINS_DATA_DUMP_JSON_FILE = "\\CoinsDataDump.json"
     DRINK = "Drink"
-    SWEET = "Sweet"
+    SNACK = "Snack"
     ALL = "All"
 
     '''
@@ -28,3 +28,5 @@ class Consts:
     iPrice = "_iPrice"
     iQuantity = "_iQuantity"
     sProductFamily = "_sProductFamily"
+    bSweet = "_bSweet"
+    bSparkling = "_bSparkling"

@@ -19,6 +19,6 @@ def test_filter_data():
     PM = ProductManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
     DR = DataReader()
     AvailableProducts = PM.GetAvailableProducts()
-    FilteredProducts = DR.FilterData(AvailableProducts, Consts.SWEET)
+    FilteredProducts = DR.FilterData(AvailableProducts, Consts.SNACK, False)
     ProductDataLen = len(FilteredProducts)
     assert ProductDataLen == 2

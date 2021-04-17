@@ -31,13 +31,15 @@ class VendingMachinePrinter:
         print("************************************** invalid product id. please try again! ***********************************")
         print("**************************************************************************************************************\n")
 
-    def InitialMessage(self, Products: dict, iCustomerMoney: int):
+    def InitialMessage(self, Products: dict, iCustomerMoney: int, sProductType: str):
         print("\nAvailable products:\n")
         lProducts = self.__Dict2PrintList(Products)
         for product in lProducts:
             print("   " + product)
         print(f"\nYour deposited money is {iCustomerMoney} " + str(Consts.CURRENCY_TYPE) + ".")
-        print(f"For see just sweets press 's', drinks 'd' and all 'a'.")
+        print(f"For see just snacks press 's', drinks 'd' and all 'a'.\n")
+        if sProductType == Consts.SNACK or sProductType == Consts.DRINK:
+            print(f"For sparkling drinks press 'sd' and for sweet snacks 'ss'.\n")
 
     def ProductPayment(self, sProductName: str):
         print(f"\nPayment for {sProductName} is done.")

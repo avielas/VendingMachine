@@ -1,9 +1,9 @@
 [
-    {"_iUid": 1, "_sName":"COKE", "_iPrice":12, "_iQuantity":5, "_sProductFamily":"Drink"},
-    {"_iUid": 2, "_sName":"FANTA", "_iPrice":10, "_iQuantity":5, "_sProductFamily":"Drink"},
-    {"_iUid": 3, "_sName":"WATER", "_iPrice":30, "_iQuantity":2, "_sProductFamily":"Drink"},
-    {"_iUid": 4, "_sName":"SPRITE", "_iPrice":17, "_iQuantity":5, "_sProductFamily":"Drink"},
-    {"_iUid": 5, "_sName":"BEER", "_iPrice":14, "_iQuantity":1, "_sProductFamily":"Drink"},
-    {"_iUid": 6, "_sName":"SNICKERS", "_iPrice":4, "_iQuantity":1, "_sProductFamily":"Sweet"},
-    {"_iUid": 7, "_sName":"MENTOS", "_iPrice":7, "_iQuantity":6, "_sProductFamily":"Sweet"}
+    {"_iUid": 1, "_sName":"COKE", "_iPrice":12, "_iQuantity":5, "_sProductFamily":"Drink", "_bSparkling": true},
+    {"_iUid": 2, "_sName":"FANTA", "_iPrice":10, "_iQuantity":5, "_sProductFamily":"Drink", "_bSparkling": true},
+    {"_iUid": 3, "_sName":"WATER", "_iPrice":30, "_iQuantity":2, "_sProductFamily":"Drink", "_bSparkling": false},
+    {"_iUid": 4, "_sName":"SPRITE", "_iPrice":17, "_iQuantity":5, "_sProductFamily":"Drink","_bSparkling": true},
+    {"_iUid": 5, "_sName":"MANGO", "_iPrice":14, "_iQuantity":1, "_sProductFamily":"Drink", "_bSparkling": false},
+    {"_iUid": 6, "_sName":"SNICKERS", "_iPrice":4, "_iQuantity":1, "_sProductFamily":"Snack", "_bSweet": true},
+    {"_iUid": 7, "_sName":"CHIPS", "_iPrice":7, "_iQuantity":6, "_sProductFamily":"Snack", "_bSweet": false}
 ]

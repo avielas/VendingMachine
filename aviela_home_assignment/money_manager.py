@@ -135,8 +135,8 @@ class MoneyManager:
             dTotalCoins[k] += v
 
         iChange = self.iCustomerMoney - ProductPrice
-        ChangeCoins = self.__Calculator.CalculateMinimum(dTotalCoins.copy(), iChange)
-        if ChangeCoins is None:
+        ChangeCoins = dict([]) if iChange == 0 else self.__Calculator.CalculateMinimum(dTotalCoins.copy(), iChange)
+        if iChange is not 0 and ChangeCoins is None:
             return False
         else:
             self._dCostumerChangeCoins = ChangeCoins

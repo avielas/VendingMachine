@@ -6,6 +6,7 @@ class VendingMachine{
     -__MoneyManager
     -__DataReader
     -__VendingMachinePrinter
+    -__specificProductsType : Boolean
     -__sChosenProductsType : String
     -__init__(pm, mm, vmp)
     +void StartVendingMachine()
@@ -19,7 +20,7 @@ class VendingMachinePrinter{
     +void NotEnoughMoney(iPrice, iCustomerMoney)
     +void NotEnoughChange()
     +void InvalidProductUId()
-    +void InitialMessage(sProductsType, iCustomerMoney)
+    +void InitialMessage(sProductsType, iCustomerMoney, sProductType)
     +void ProductPayment(sProductName)
     +void ChangeMoney(iChangeMoney)
     +void __Dict2PrintList(dProducts)
@@ -53,7 +54,7 @@ class DataReader{
     +dProducts ReadProductsDataFromFile(sProductsJsonFilePath)
     +dMoney ReadMoneyDataFromFile(sMoneyJsonFilePath)
     +dMoney ReadCoinsDataFromFile(sCoinsJsonFilePath)
-    +filteredProducts FilterData(self, Products, sProductType)
+    +filteredProducts FilterData(Products, sProductType, specificProductsType)
 }
 
 class Product{
@@ -69,7 +70,7 @@ class Product{
 
 class Drink{}
 
-class Sweet{}
+class Snack{}
 
 class Consts{
     CURRENCY_TYPE
@@ -82,7 +83,7 @@ class Consts{
     MONEY_DATA_DUMP_JSON_FILE
     COINS_DATA_DUMP_JSON_FILE
     DRINK
-    SWEET
+    SNACK
     ALL
 
     another few consts which used for Serialization
@@ -99,7 +100,7 @@ abstract class ProductManager{
 }
 
 Product <|-- Drink
-Product <|-- Sweet
+Product <|-- Snack
 VendingMachine "1" *-- "1" ProductManager : have >
 VendingMachine "1" *-- "1" MoneyManager : have >
 VendingMachine "1" *-- "1" VendingMachinePrinter : have >

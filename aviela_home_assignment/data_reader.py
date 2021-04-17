@@ -1,6 +1,6 @@
 import json
 from aviela_home_assignment.drink import Drink
-from aviela_home_assignment.sweet import Sweet
+from aviela_home_assignment.snack import Snack
 from aviela_home_assignment.consts import Consts
 
 
@@ -21,8 +21,12 @@ class DataReader:
         with open(sProductsJsonFilePath) as IOFile:
             lProducts = json.load(IOFile)
             for pProduct in lProducts:
-                product = eval(pProduct[Consts.sProductFamily])(pProduct[Consts.iUid], pProduct[Consts.sName],
-                                                                pProduct[Consts.iPrice], pProduct[Consts.iQuantity], pProduct[Consts.sProductFamily])
+                if pProduct[Consts.sProductFamily] == Consts.DRINK:
+                    product = eval(pProduct[Consts.sProductFamily])(pProduct[Consts.iUid], pProduct[Consts.sName],
+                                                                    pProduct[Consts.iPrice], pProduct[Consts.iQuantity], pProduct[Consts.bSparkling])
+                elif pProduct[Consts.sProductFamily] == Consts.SNACK:
+                    product = eval(pProduct[Consts.sProductFamily])(pProduct[Consts.iUid], pProduct[Consts.sName],
+                                                                    pProduct[Consts.iPrice], pProduct[Consts.iQuantity], pProduct[Consts.bSweet])
                 dProducts[product.iUid] = product
         return dProducts
 
@@ -43,6 +47,7 @@ class DataReader:
         Read coins data from json file and keep them on one coins list
         @param sCoinsJsonFilePath: path to json file which contains coins and their quantity
         @type sCoinsJsonFilePath: String
+        @type sCoinsJsonFilePath: String
         @return: Dictionary with coins
         @rtype: Dictionary
         """
@@ -50,13 +55,15 @@ class DataReader:
             dCoins = json.load(IOFile)
         return dCoins
 
-    def FilterData(self, Products: dict, sProductType: str) -> dict:
+    def FilterData(self, Products: dict, sProductType: str, specificProductsType: bool) -> dict:
         """
         Read coins data from json file and keep them on one coins list
         @param Products: products dictionary
         @type Products: Dictionary
-        @param sProductType: product's type to show to user (ALL, SWEET, DRINK)
+        @param sProductType: product's type to show to user (ALL, SNACK, DRINK)
         @type Products: String
+        @param specificProductsType: product's specific type to show to user (sweet Snacks only, sparkling Drink only)
+        @type specificProductsType: Boolean
         @return: Dictionary with filtered product
         @rtype: Dictionary
         """
@@ -64,6 +71,10 @@ class DataReader:
             return Products
         filteredProducts = dict([])
         for pProduct in Products.values():
-            if pProduct.sProductFamily == sProductType:
+            if specificProductsType and pProduct.sProductFamily == sProductType and sProductType == Consts.DRINK and pProduct.bSparkling:
+                filteredProducts[pProduct.iUid] = pProduct
+            elif specificProductsType and pProduct.sProductFamily == sProductType and sProductType == Consts.SNACK and pProduct.bSweet:
+                filteredProducts[pProduct.iUid] = pProduct
+            elif not specificProductsType and pProduct.sProductFamily == sProductType:
                 filteredProducts[pProduct.iUid] = pProduct
         return filteredProducts
