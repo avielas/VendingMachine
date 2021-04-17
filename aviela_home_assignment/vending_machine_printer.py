@@ -5,6 +5,10 @@ class VendingMachinePrinter:
     """
     VendingMachinePrinter class which responsible to print VM messages
     """
+    def WelcomeToVM(self):
+        print("\n\n *********************************************")
+        print("     WELCOME TO THE VENDING MACHINE           ")
+        print(" *********************************************")
 
     def InvalidCoin(self):
         print("\n*********************************************************************")
@@ -28,17 +32,26 @@ class VendingMachinePrinter:
         print("**************************************************************************************************************\n")
 
     def InitialMessage(self, Products: dict, iCustomerMoney: int):
-        print("\nYou can choose one of the following products:")
+        print("\nAvailable products:\n")
         lProducts = self.__Dict2PrintList(Products)
-        print(lProducts)
-        print(f"For now, your deposit money is {iCustomerMoney} " + str(Consts.CURRENCY_TYPE) + ".")
-        print(f"For see just sweets press 's', for drinks 'd' and for all 'a'.")
+        for product in lProducts:
+            print("   " + product)
+        print(f"\nYour deposited money is {iCustomerMoney} " + str(Consts.CURRENCY_TYPE) + ".")
+        print(f"For see just sweets press 's', drinks 'd' and all 'a'.")
 
     def ProductPayment(self, sProductName: str):
-        print(f"Payment for {sProductName} is done.")
+        print(f"\nPayment for {sProductName} is done.")
 
     def ChangeMoney(self, iChangeMoney: int, dCostumerChangeCoins: dict):
-        print(f"\nChange money is {iChangeMoney} " + Consts.CURRENCY_TYPE + " ( Coins: " + str(dCostumerChangeCoins) + " ).")
+        lChangeCoinsToPrint = []
+        for k, v in dCostumerChangeCoins.items():
+            line = "{} {}, coins: {}".format(k, Consts.CURRENCY_TYPE, str(v))
+            lChangeCoinsToPrint.append(line)
+        toPrint = "\nYour change is: {} {} ".format(iChangeMoney, Consts.CURRENCY_TYPE)
+        print(toPrint)
+        for coin in lChangeCoinsToPrint:
+            print("   " + coin)
+        # print(f"\nChange money is {iChangeMoney} " + Consts.CURRENCY_TYPE + " ( Coins: " + str(dCostumerChangeCoins) + " ).")
 
     def __Dict2PrintList(self, dProducts: dict) -> list:
         """
@@ -51,7 +64,7 @@ class VendingMachinePrinter:
         lAvailableProducts = []
         for Product in dProducts.values():
             if Product.iQuantity > 0:
-                sAvailableProductWithPrice = "{} {} {} {} {} {}".format(Product.iUid, ":", Product.sName, "price", Product.iPrice, Consts.CURRENCY_TYPE)
+                sAvailableProductWithPrice = "{} {} - {}: {} {}".format(Product.iUid, Product.sName, "Price", Product.iPrice, Consts.CURRENCY_TYPE)
                 lAvailableProducts.append(sAvailableProductWithPrice)
         return lAvailableProducts
 

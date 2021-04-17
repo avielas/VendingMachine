@@ -41,7 +41,7 @@ class VendingMachine:
         Collect coin from user and print error in case of invalid coin
         """
         while True:
-            print("\n --- Vending machine --- ")
+            self.__VendingMachinePrinter.WelcomeToVM()
             AvailableProducts = self.__ProductManager.GetAvailableProducts()
             FilteredProducts = self.__DataReader.FilterData(AvailableProducts, self.__sChosenProductsType)
             self.__VendingMachinePrinter.InitialMessage(FilteredProducts, self.__MoneyManager.iCustomerMoney)
