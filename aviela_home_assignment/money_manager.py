@@ -8,23 +8,16 @@ class MoneyManager:
     """
     MoneyManager class for handle coins, money and dumping
     """
-    def __init__(self, sMoneyJsonPath: str, sCoinsJsonPath: str):
+    def __init__(self, sCoinsJsonPath: str):
         """
         @param sCoinsJsonPath: JSON path to initialize variable dVmCoins
         @type sCoinsJsonPath: String
-        @param sMoneyJsonPath: JSON path to initialize variables iChangeMoney, iCustomerMoney values
-        @type sMoneyJsonPath: String
         """
         self.__Calculator = Calculator()
         self.__DataReader = DataReader()
-        self.__dMoney = self.__DataReader.ReadMoneyDataFromFile(sMoneyJsonPath)
         self.__dVmCoins = self.__DataReader.ReadCoinsDataFromFile(sCoinsJsonPath)
         self.__initDCostumerCoins()
         self._dCostumerChangeCoins = dict([])
-
-        self._iVmChangeMoney = self.__dMoney[Consts.iVmChangeMoney]
-        self._iCustomerMoney = self.__dMoney[Consts.iCustomerMoney]
-        # self._iCustomerChangeMoney = self.__dMoney[Consts.iCustomerChangeMoney]
 
     @property
     def dVmCoins(self) -> dict:
@@ -52,7 +45,6 @@ class MoneyManager:
         @rtype: Integer
         """
         return self.__sumCoinsDict(self.__dVmCoins)
-        # return self._iVmChangeMoney
 
     @property
     def iCustomerMoney(self) -> int:
@@ -72,22 +64,12 @@ class MoneyManager:
         """
         return self.__sumCoinsDict(self._dCostumerChangeCoins)
 
-    def DumpMoney(self, sJsonMoneyFilePath: str, sJsonCoinsFilePath: str):
+    def DumpMoney(self, sJsonCoinsFilePath: str):
         """
-        Stored values which created by json.dumps() to the files sJsonMoneyFilePath and sJsonCoinsFilePath. This critical for persistently purposes.
-        @param sJsonMoneyFilePath: Money json file path for dumping
-        @type sJsonMoneyFilePath: String
+        Stored values which created by json.dumps() to the files sJsonCoinsFilePath. This critical for persistently purposes.
         @param sJsonCoinsFilePath: Coins json file path for dumping
         @type sJsonCoinsFilePath: String
         """
-        dMoney = dict([])
-        dMoney[Consts.iVmChangeMoney] = self.iVmChangeMoney
-        dMoney[Consts.iCustomerMoney] = self.iCustomerMoney
-        # dMoney[Consts.iCustomerChangeMoney] = self.iCustomerChangeMoney
-        sMoneyJsonToDump = json.dumps(dMoney)
-        # Open the file for storing money data when the product has been paid (we can overwrite MoneyData.json, but keep it separately to make it clear)
-        with open(sJsonMoneyFilePath, "w") as IOFile:
-            IOFile.write(sMoneyJsonToDump)
         sCoinsJsonToDump = json.dumps(self.dVmCoins)
         # Open the file for storing coins data when the product has been paid (we can overwrite CoinsData.json, but keep it separately to make it clear)
         with open(sJsonCoinsFilePath, "w") as IOFile:
@@ -115,9 +97,6 @@ class MoneyManager:
         """
         return self.iCustomerMoney >= ProductPrice
 
-    # def AddToCustomerChangeMoney(self, iProductPrice):
-    #     self._iCustomerChangeMoney = self.iCustomerMoney - iProductPrice
-
     def VmHaveEnoughChange(self, ProductPrice: int) -> bool:
         """
         This function use CalculateMinimum to check if VM have enough change to return to user.
@@ -127,7 +106,6 @@ class MoneyManager:
         @return: True if yes, else False
         @rtype: Boolean
         """
-        # return self.iCustomerChangeMoney < self._iVmChangeMoney
 
         # merge 2 dictionaries
         dTotalCoins = self._dCostumerCoins.copy()
@@ -136,7 +114,7 @@ class MoneyManager:
 
         iChange = self.iCustomerMoney - ProductPrice
         ChangeCoins = dict([]) if iChange == 0 else self.__Calculator.CalculateMinimum(dTotalCoins.copy(), iChange)
-        if iChange is not 0 and ChangeCoins is None:
+        if iChange != 0 and ChangeCoins is None:
             return False
         else:
             self._dCostumerChangeCoins = ChangeCoins

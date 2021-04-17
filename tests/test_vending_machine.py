@@ -41,8 +41,7 @@ def test_start_vending_machine_4():
 
 def start_vending_machine(CustomerCoins):
     DirPath = os.path.dirname(os.path.dirname(__file__)) + "\\"
-    MM = MoneyManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_JSON_FILE,
-                      DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.COINS_DATA_JSON_FILE)
+    MM = MoneyManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.COINS_DATA_JSON_FILE)
     PM = ProductManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
 
     # __CollectCoinsFromUser
@@ -92,9 +91,8 @@ def handle_purchase(DirPath, MM, PM, Product):
     sProductJsonFilePath = DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_DUMP_JSON_FILE
     PM.DumpProducts(sProductJsonFilePath)
     # save the new amount into file
-    mMoneyDumpJsonFilePath = DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_DUMP_JSON_FILE
     mCoinsDumpJsonFilePath = DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.COINS_DATA_DUMP_JSON_FILE
-    MM.DumpMoney(mMoneyDumpJsonFilePath, mCoinsDumpJsonFilePath)
+    MM.DumpMoney(mCoinsDumpJsonFilePath)
 
 
 def get_product_selection_from_user(PM):

@@ -129,9 +129,8 @@ class VendingMachine:
         sProductJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.PRODUCT_DATA_DUMP_JSON_FILE
         self.__ProductManager.DumpProducts(sProductJsonFilePath)
         # save the new amount into file
-        mMoneyDumpJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.MONEY_DATA_DUMP_JSON_FILE
         mCoinsDumpJsonFilePath = Consts.JSON_DIR_PATH_PROGRAM + Consts.COINS_DATA_DUMP_JSON_FILE
-        self.__MoneyManager.DumpMoney(mMoneyDumpJsonFilePath, mCoinsDumpJsonFilePath)
+        self.__MoneyManager.DumpMoney(mCoinsDumpJsonFilePath)
 
         self.__VendingMachinePrinter.ChangeMoney(self.__MoneyManager.iCustomerChangeMoney, self.__MoneyManager.dCostumerChangeCoins)
         self.__VendingMachinePrinter.ProductPayment(product.sName)

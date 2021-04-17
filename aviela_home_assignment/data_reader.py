@@ -30,18 +30,6 @@ class DataReader:
                 dProducts[product.iUid] = product
         return dProducts
 
-    def ReadMoneyDataFromFile(self, sMoneyJsonFilePath: str) -> dict:
-        """
-        Read money data from json file and keep them on one money list
-        @param sMoneyJsonFilePath: path to json file which contains serialized money class objects
-        @type sMoneyJsonFilePath: String
-        @return: Dictionary with money objects
-        @rtype: Dictionary
-        """
-        with open(sMoneyJsonFilePath) as IOFile:
-            dMoney = json.load(IOFile)
-        return dMoney
-
     def ReadCoinsDataFromFile(self, sCoinsJsonFilePath: str) -> dict:
         """
         Read coins data from json file and keep them on one coins list

@@ -9,8 +9,7 @@ def test_getters_and_setters():
     Asserts the value which stored on variables
     """
     DirPath = os.path.dirname(os.path.dirname(__file__)) + "\\"
-    MM = MoneyManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_JSON_FILE,
-                      DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.COINS_DATA_JSON_FILE)
+    MM = MoneyManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.COINS_DATA_JSON_FILE)
 
     CustomerCoins = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
     for Coin in CustomerCoins:
@@ -24,8 +23,7 @@ def test_dump_money():
     Asserts the value which stored previously by DumpMoney function
     """
     DirPath = os.path.dirname(os.path.dirname(__file__)) + "\\"
-    MM = MoneyManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_JSON_FILE,
-                      DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.COINS_DATA_JSON_FILE)
+    MM = MoneyManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.COINS_DATA_JSON_FILE)
     CurrChangeMoney = MM.iVmChangeMoney
     # save the new amount into file
     MM.AddToCustomerCoins('2')
@@ -35,12 +33,10 @@ def test_dump_money():
 
     # always true
     if MM.VmHaveEnoughChange(3):
-        mMoneyDumpJsonFilePath = DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_DUMP_JSON_FILE
         mCoinsDumpJsonFilePath = DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.COINS_DATA_DUMP_JSON_FILE
-        MM.DumpMoney(mMoneyDumpJsonFilePath, mCoinsDumpJsonFilePath)
+        MM.DumpMoney(mCoinsDumpJsonFilePath)
 
         # create another MoneyManager from stored file and assert the values
-        MMAfter = MoneyManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.MONEY_DATA_DUMP_JSON_FILE,
-                                         DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.COINS_DATA_DUMP_JSON_FILE)
+        MMAfter = MoneyManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.COINS_DATA_DUMP_JSON_FILE)
         assert MMAfter.iVmChangeMoney == CurrChangeMoney + 3
         assert MMAfter.iCustomerMoney == 0
