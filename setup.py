@@ -13,5 +13,6 @@ setup(name='aviela_home_assignment',
 
     install_requires=[
         # 'enum34;python_version<"3.4"',
+        'pytest', 'plantuml'
     ],
 )
