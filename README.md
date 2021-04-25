@@ -1,1 +1,1 @@
-Vending Machine based on OOP priciples
+Vending Machine based on OOP principles
