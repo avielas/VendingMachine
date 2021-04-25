@@ -4,6 +4,7 @@ lPackages = find_packages(exclude=('tests', 'tests.*'))
 
 
 setup(name='aviela_home_assignment',
+    python_requires='>3.8',
     version='0.1.0',
     description='Aviel A home assignment',
     author='na',
@@ -12,7 +13,7 @@ setup(name='aviela_home_assignment',
     packages=lPackages,
 
     install_requires=[
-        # 'enum34;python_version<"3.4"',
+        # 'enum34;python_version<"3.8"',
         'pytest', 'plantuml'
     ],
 )
