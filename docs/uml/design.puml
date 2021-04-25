@@ -2,67 +2,115 @@
 'https://plantuml.com/class-diagram
 
 class VendingMachine{
-    -_drink_manager
-    -_money_manager
-    -void __init__(self, drink_manager, money_manager)
-    +void start_vending_machine()
+    -__ProductManager
+    -__MoneyManager
+    -__DataReader
+    -__VendingMachinePrinter
+    -__specificProductsType : Boolean
+    -__sChosenProductsType : String
+    -__init__(pm, mm, vmp)
+    +void StartVendingMachine()
+    +void __CollectCoinsFromUser()
+    +Product __GetProductSelectionFromUser()
+    +void __HandlePurchase(product)
+}
+
+class VendingMachinePrinter{
+    +void InvalidCoin()
+    +void NotEnoughMoney(iPrice, iCustomerMoney)
+    +void NotEnoughChange()
+    +void InvalidProductUId()
+    +void InitialMessage(sProductsType, iCustomerMoney, sProductType)
+    +void ProductPayment(sProductName)
+    +void ChangeMoney(iChangeMoney)
+    +void __Dict2PrintList(dProducts)
 }
 
 class MoneyManager{
-    -_change_money : Integer
-    -_customer_money : Integer
-    - void __init__(self, money_json)
-    +_change_money change_money(self)
-    +void change_money(self, x)
-    +_customer_money customer_money(self)
-    +void customer_money(self, x)
-    +void record_money(self, json_moeny_data)
-    +void print_change_money(self, change_money)
+    -__Calculator
+    -__DataReader
+    -dVmCoins : Dictionary
+    -dCostumerCoins : Dictionary
+    -dCostumerChangeCoins : Dictionary
+    -_iVmChangeMoney : Integer
+    -_iCustomerMoney : Integer
+    -_iCustomerChangeMoney : Integer
+    -Just Getters - init from JSON
+    -__init__(sMoneyJsonPath: str)
+    +void DumpMoney(sJsonMoneyFilePath, sJsonCoinsFilePath)
+    +AddToCustomerCoins(coin)
+    +bool CustomerHaveEnoughMoney(ProductPrice)
+    +bool VmHaveEnoughChange(ProductPrice)
+    +int __sumCoinsDict(dDict)
+    +__initDCostumerCoins()
 }
 
-class DrinkManager{
-    -_drink_data [id, drink] : dictionary [1..*] of
-    -void __init__(self, drink_json)
-    +void add_drink_data(self, drink)
-    +void drink_data(self, x)
-    +available_drinks get_available_drink_data(self)
-    +void record_drink(self, json_drink_data)
-    +void print_drink_payment(self, drink_name)
+class Calculator{
+    +minimalMatch CalculateMinimum(coins, change)
+    +matches __CalculateFinite(coins, change, start)
+}
+
+class DataReader{
+    +dProducts ReadProductsDataFromFile(sProductsJsonFilePath)
+    +dMoney ReadMoneyDataFromFile(sMoneyJsonFilePath)
+    +dMoney ReadCoinsDataFromFile(sCoinsJsonFilePath)
+    +filteredProducts FilterData(Products, sProductType, specificProductsType)
 }
 
 class Product{
-    -_id : Integer
-    -_name : String
-    -_price : Integer
-    -_quantity : Integer
-    -void __init__(self, id, name, price, quantity)
-    +_id id(self)
-    +void id(self, x)
-    +_name name(self)
-    +void name(self, x)
-    +_price price(self)
-    +void price(self, x)
-    +_quantity quantity(self)
-    +void quantity(self, x)
+    -_iUid : Integer
+    -_sName : String
+    -_iPrice : Integer
+    -_iQuantity : Integer
+    -_sProductFamily : String
+    -__init__(iUid, sName, iPrice, iQuantity, sProductFamily)
+    -Just Getters - init from JSON
+    +void Reduce1FromQuantity()
 }
 
-class Drink{}
+class Drink{
+    -bSparkling : Boolean
+}
+
+class Snack{
+    -bSweet : Boolean
+}
 
 class Consts{
-    CURRENCY_TYPE : String
-    COINS_LIST : List
+    CURRENCY_TYPE
+    JSON_DIR_PATH_TESTS
+    JSON_DIR_PATH_PROGRAM
+    PRODUCT_DATA_JSON_FILE
+    MONEY_DATA_JSON_FILE
+    COINS_DATA_JSON_FILE
+    PRODUCT_DATA_DUMP_JSON_FILE
+    MONEY_DATA_DUMP_JSON_FILE
+    COINS_DATA_DUMP_JSON_FILE
+    DRINK
+    SNACK
+    ALL
+
+    another few consts which used for Serialization
 }
 
 abstract class ProductManager{
-    data_object get_available_data(self)
-    void record_object_data(self, json_object_data, json_file_path)
+    - _dProducts : Dict
+    -__init__(sProductsJsonFilePath)
+    -Just Getters - init from JSON
+    +lAvailableProducts GetAvailableProducts()
+    +void RemoveProduct(iUid)
+    +void DumpProducts(sJsonFilePath)
+    +void UpdateQuantity(iProductId)
 }
 
-ProductManager <|-- DrinkManager
 Product <|-- Drink
-VendingMachine "1" *-- "1" DrinkManager : have >
+Product <|-- Snack
+VendingMachine "1" *-- "1" ProductManager : have >
 VendingMachine "1" *-- "1" MoneyManager : have >
-DrinkManager "1" *-- "many" Drink :have >
-(Drink, DrinkManager) . Bug
+VendingMachine "1" *-- "1" VendingMachinePrinter : have >
+VendingMachine "1" *-- "1" DataReader : have >
+ProductManager "1" *-- "1" DataReader : have >
+MoneyManager "1" *-- "1" Calculator : have >
+ProductManager "1" *-- "many" Product : have >
 
 @enduml
