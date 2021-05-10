@@ -6,7 +6,7 @@ import os
 
 
 def test_read_data_from_file():
-    DirPath = os.path.dirname(os.path.dirname(__file__)) + "\\"
+    DirPath = os.path.dirname(os.path.dirname(__file__)) + Consts.SLASH
     DR = DataReader()
     sProductsJsonFilePath = DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE
     dProducts = DR.ReadProductsDataFromFile(sProductsJsonFilePath)
@@ -15,7 +15,7 @@ def test_read_data_from_file():
 
 
 def test_filter_data():
-    DirPath = os.path.dirname(os.path.dirname(__file__)) + "\\"
+    DirPath = os.path.dirname(os.path.dirname(__file__)) + Consts.SLASH
     PM = ProductManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
     DR = DataReader()
     AvailableProducts = PM.GetAvailableProducts()

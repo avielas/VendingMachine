@@ -40,7 +40,7 @@ def test_start_vending_machine_4():
 
 
 def start_vending_machine(CustomerCoins):
-    DirPath = os.path.dirname(os.path.dirname(__file__)) + "\\"
+    DirPath = os.path.dirname(os.path.dirname(__file__)) + Consts.SLASH
     MM = MoneyManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.COINS_DATA_JSON_FILE)
     PM = ProductManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
 

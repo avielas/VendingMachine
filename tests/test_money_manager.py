@@ -8,7 +8,7 @@ def test_getters_and_setters():
     """
     Asserts the value which stored on variables
     """
-    DirPath = os.path.dirname(os.path.dirname(__file__)) + "\\"
+    DirPath = os.path.dirname(os.path.dirname(__file__)) + Consts.SLASH
     MM = MoneyManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.COINS_DATA_JSON_FILE)
 
     CustomerCoins = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
@@ -22,7 +22,7 @@ def test_dump_money():
     """
     Asserts the value which stored previously by DumpMoney function
     """
-    DirPath = os.path.dirname(os.path.dirname(__file__)) + "\\"
+    DirPath = os.path.dirname(os.path.dirname(__file__)) + Consts.SLASH
     MM = MoneyManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.COINS_DATA_JSON_FILE)
     CurrChangeMoney = MM.iVmChangeMoney
     # save the new amount into file

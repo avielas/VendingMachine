@@ -8,7 +8,7 @@ def test_get_available_products():
     """
     Validate the GetAvailableProducts function which returned just products with quantity 0
     """
-    DirPath = os.path.dirname(os.path.dirname(__file__)) + "\\"
+    DirPath = os.path.dirname(os.path.dirname(__file__)) + Consts.SLASH
     PM = ProductManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
     Product_1 = PM.dProducts[1]
     Product_3 = PM.dProducts[3]
@@ -32,7 +32,7 @@ def test_update_quantity_and_dump_products():
     """
     Asserts the value which stored previously by DumpProducts function
     """
-    DirPath = os.path.dirname(os.path.dirname(__file__)) + "\\"
+    DirPath = os.path.dirname(os.path.dirname(__file__)) + Consts.SLASH
     PM = ProductManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
 
     Product = PM.dProducts[1]
@@ -56,7 +56,7 @@ def test_remove_and_dump_product():
     """
     Asserts the length of dProducts after remove product
     """
-    DirPath = os.path.dirname(os.path.dirname(__file__)) + "\\"
+    DirPath = os.path.dirname(os.path.dirname(__file__)) + Consts.SLASH
     PM = ProductManager(DirPath + Consts.JSON_DIR_PATH_TESTS + Consts.PRODUCT_DATA_JSON_FILE)
 
     # get snickers with quantity=1
